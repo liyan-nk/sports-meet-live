@@ -24,7 +24,7 @@ import {
   User,
   Clock
 } from 'lucide-react';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { isAppwriteConfigured } from '../lib/appwrite';
 
 export const AdminDashboardPage: React.FC = () => {
   const { user, isAuthorizedAdmin, isLoading: isAuthLoading, logout } = useAuth();
@@ -152,7 +152,7 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
           <p className="text-xs text-slate-400">
             Logged in as: <strong className="text-slate-200">{user.email}</strong>
-            {!isSupabaseConfigured && <span className="ml-2 text-amber-400 font-mono text-[10px]">(Local Dev Mode)</span>}
+            {!isAppwriteConfigured && <span className="ml-2 text-amber-400 font-mono text-[10px]">(Local Dev Mode)</span>}
           </p>
         </div>
 

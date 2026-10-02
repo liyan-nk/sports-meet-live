@@ -1,57 +1,48 @@
 # SPORTS MEET LIVE 2026 — PRODUCTION DEPLOYMENT GUIDE
 
-This document provides step-by-step instructions for deploying the **SPORTS MEET LIVE 2026** web application using free/zero-cost cloud infrastructure (Vercel/Netlify + Supabase Free Tier).
+This document provides step-by-step instructions for deploying the **SPORTS MEET LIVE 2026** web application using Appwrite backend infrastructure and Vercel hosting.
 
 ---
 
 ## 1. Prerequisites & Architecture Overview
 
 - **Frontend Hosting**: Vercel, Netlify, Cloudflare Pages, or GitHub Pages.
-- **Backend / Database**: Supabase (PostgreSQL, Realtime Pub/Sub, Auth with Google OAuth).
+- **Backend / Database**: Appwrite (Cloud or Self-Hosted Appwrite instance: Databases, Realtime Pub/Sub, Auth).
 - **Client Framework**: React 18 + Vite + TailwindCSS + PWA.
 
 ---
 
-## 2. Supabase Setup & SQL Migration
+## 2. Appwrite Setup & Demo Database Seeding
 
-1. **Create a Supabase Project**:
-   - Go to [Supabase Console](https://supabase.com) and create a new project.
-   - Save your **Project URL** and **`anon` Public API Key** from `Project Settings -> API`.
+1. **Create an Appwrite Project**:
+   - Log into your Appwrite Console or self-hosted Appwrite instance.
+   - Create a new project (e.g. `sports-meet-live`).
+   - Copy your **Project ID** and **API Endpoint** (e.g. `https://cloud.appwrite.io/v1`).
 
-2. **Run SQL Migration**:
-   - Go to the **SQL Editor** in your Supabase dashboard.
-   - Copy the entire contents of [`supabase/migrations/001_sports_meet.sql`](file:///home/liyan/Projects/sports_meet/supabase/migrations/001_sports_meet.sql).
-   - Execute the SQL script. This sets up:
-     - `teams`, `events`, `scoring_rules`, `standings_adjustments`, `results`, `authorized_admins` tables.
-     - Row Level Security (RLS) policies allowing public read and restricting writes to active authorized admins.
-     - Realtime publication subscriptions (`supabase_realtime` publication).
+2. **Database & Collections Setup**:
+   - Create a Database in Appwrite (or let the setup script auto-create it).
+   - Use the included setup script to provision collections (`teams`, `events`, `scoring_rules`, `standings_adjustments`, `results`, `authorized_admins`) and seed initial demo data:
+     ```bash
+     export APPWRITE_ENDPOINT="https://cloud.appwrite.io/v1"
+     export APPWRITE_PROJECT_ID="your-project-id"
+     export APPWRITE_API_KEY="your-server-api-key" # Needs database & collection administrative permissions
+     node scripts/setup_appwrite_demo.js
+     ```
 
-3. **Enable Realtime**:
-   - In Supabase dashboard, navigate to `Database -> Realtime`.
-   - Ensure `results`, `standings_adjustments`, `events`, and `scoring_rules` tables have Realtime enabled.
+3. **Collection Permissions & Realtime**:
+   - Ensure collections have **Any** read access (`read("any")`) enabled for public standings visibility.
+   - Writes are authorized through Appwrite Auth and verified against the `authorized_admins` collection.
 
 ---
 
-## 3. Google OAuth & Whitelist Setup
+## 3. Appwrite Authentication & Whitelist Setup
 
-1. **Configure Google OAuth Provider in Supabase**:
-   - Go to Google Cloud Console (`https://console.cloud.google.com`).
-   - Create OAuth 2.0 Credentials (Web application).
-   - Add Authorized Redirect URIs provided in Supabase `Authentication -> Providers -> Google` (e.g., `https://<project-ref>.supabase.co/auth/v1/callback`).
-   - Copy the Client ID and Client Secret into Supabase `Authentication -> Providers -> Google` settings and enable Google login.
+1. **Configure Auth Providers**:
+   - In your Appwrite project dashboard, enable Google OAuth or Email/Password under **Auth -> Settings**.
+   - Add your client domain (e.g., `localhost`, `your-app.vercel.app`) under **Settings -> Web Platforms**.
 
-2. **Set Authorized Redirect URLs**:
-   - In Supabase `Authentication -> URL Configuration`:
-     - **Site URL**: `https://your-app-domain.vercel.app`
-     - **Redirect URLs**: `https://your-app-domain.vercel.app/admin` and `https://your-app-domain.vercel.app/`
-
-3. **Seed Initial Admin Whitelist**:
-   - Run the following SQL statement in Supabase SQL Editor replacing `your.email@gmail.com` with your Google login email:
-     ```sql
-     INSERT INTO public.authorized_admins (email, name, active)
-     VALUES ('your.email@gmail.com', 'Lead Sports Officer', true)
-     ON CONFLICT (email) DO UPDATE SET active = true;
-     ```
+2. **Seed Initial Admin Whitelist**:
+   - The setup script seeds the default admin whitelist. Additional admins can be managed through the Admin Console (`/admin/admins`) or directly in the `authorized_admins` collection.
 
 ---
 
@@ -60,12 +51,13 @@ This document provides step-by-step instructions for deploying the **SPORTS MEET
 Create `.env` or set environment variables in your deployment hosting provider (Vercel/Netlify):
 
 ```env
-# Required for live database & auth integration
-VITE_SUPABASE_URL=https://<your-supabase-project-id>.supabase.co
-VITE_SUPABASE_ANON_KEY=<your-supabase-anon-public-key>
+# Required for Appwrite live database & auth integration
+VITE_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+VITE_APPWRITE_PROJECT_ID=your-appwrite-project-id
+VITE_APPWRITE_DATABASE_ID=sports_meet
 ```
 
-> **Note**: Never expose service role keys or commit `.env` files to git repository.
+> **Note**: Only client-safe `VITE_APPWRITE_*` environment variables should be exposed to the browser. Never commit secret API keys.
 
 ---
 
@@ -103,3 +95,4 @@ Ensure single-page routing fallbacks (`/results`, `/events`, `/admin`, `/admin/a
 - Web manifest is served from `/manifest.webmanifest`.
 - Standings are optimized for standalone mobile app installation.
 - Realtime pub/sub handles live updates without aggressive stale data caching.
+

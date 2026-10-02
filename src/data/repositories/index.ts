@@ -1,37 +1,37 @@
 import { mockRepositoryStore } from './mock/MockStandingsRepository';
-import { supabaseStandingsRepository } from './supabase/SupabaseStandingsRepository';
-import { isSupabaseConfigured } from '../../lib/supabase';
+import { appwriteStandingsRepository } from './appwrite/AppwriteStandingsRepository';
+import { isAppwriteConfigured } from '../../lib/appwrite';
 
 /**
  * Data Repository Registry.
  * 
- * Automatically selects Supabase Production Repository when VITE_SUPABASE_URL is set,
+ * Automatically selects Appwrite Production Repository when VITE_APPWRITE_PROJECT_ID is set,
  * or cleanly falls back to MockRepositoryStore for local offline development & testing.
  */
-export const standingsRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const standingsRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const scoringRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const scoringRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const teamRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const teamRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const resultRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const resultRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const eventRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const eventRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const adjustmentRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const adjustmentRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;
 
-export const adminRepository = isSupabaseConfigured
-  ? supabaseStandingsRepository
+export const adminRepository = isAppwriteConfigured
+  ? appwriteStandingsRepository
   : mockRepositoryStore;

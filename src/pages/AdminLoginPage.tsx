@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Navigate, Link } from 'react-router-dom';
 import { ShieldCheck, LogIn, AlertTriangle, ArrowLeft } from 'lucide-react';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { isAppwriteConfigured } from '../lib/appwrite';
 
 export const AdminLoginPage: React.FC = () => {
   const { user, isAuthorizedAdmin, isLoading, error, loginWithGoogle, devMockLogin } = useAuth();
@@ -92,7 +92,7 @@ export const AdminLoginPage: React.FC = () => {
             <span>Continue with Google</span>
           </button>
 
-          {!isSupabaseConfigured && (
+          {!isAppwriteConfigured && (
             <div className="pt-3 text-center">
               <span className="text-[11px] text-slate-500">Local Dev Quick Login:</span>
               <div className="mt-1 flex justify-center gap-2">
