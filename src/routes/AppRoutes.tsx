@@ -11,6 +11,8 @@ import { AdminAdminsPage } from '../pages/AdminAdminsPage';
 import { PosterGeneratorPage } from '../pages/PosterGeneratorPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 
+import { EventDetailPage } from '../pages/EventDetailPage';
+
 export const AppRoutes: React.FC = () => {
   return (
     <AppLayout>
@@ -18,6 +20,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/standings" element={<StandingsPage />} />
         <Route path="/events" element={<EventsPage />} />
+        <Route path="/events/:id" element={<EventDetailPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin" element={<AdminDashboardPage />} />

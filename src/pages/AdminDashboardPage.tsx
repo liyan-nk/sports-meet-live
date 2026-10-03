@@ -3,9 +3,9 @@ import { useAuth } from '../hooks/useAuth';
 import { Navigate, Link } from 'react-router-dom';
 import type { TeamStanding, Result, SportsEvent, StandingsAdjustment, Team, ScoringRule } from '../types/models';
 import { standingsRepository, resultRepository, eventRepository, adjustmentRepository, scoringRepository } from '../data/repositories';
-import { AddResultModal } from '../components/admin/AddResultModal';
+import { AddResultTaskFlow } from '../components/admin/AddResultTaskFlow';
 import { EditResultModal } from '../components/admin/EditResultModal';
-import { CreateEventModal } from '../components/admin/CreateEventModal';
+import { CreateEventTaskFlow } from '../components/admin/CreateEventTaskFlow';
 import { EditEventModal } from '../components/admin/EditEventModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { StandingsAdjustmentModal } from '../components/admin/StandingsAdjustmentModal';
@@ -362,8 +362,8 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Scoring Rules Manager */}
       <ScoringRulesEditor onRulesUpdated={loadDashboardData} />
 
-      {/* Modals */}
-      <AddResultModal
+      {/* Modals & Task Flows */}
+      <AddResultTaskFlow
         isOpen={isAddResultOpen}
         onClose={() => setIsAddResultOpen(false)}
         onSuccess={loadDashboardData}
@@ -373,7 +373,7 @@ export const AdminDashboardPage: React.FC = () => {
         }}
       />
 
-      <CreateEventModal
+      <CreateEventTaskFlow
         isOpen={isCreateEventOpen}
         onClose={() => setIsCreateEventOpen(false)}
         onSuccess={() => {
