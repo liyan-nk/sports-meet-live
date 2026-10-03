@@ -8,7 +8,7 @@
  *   node scripts/setup_appwrite_demo.js
  */
 
-import { Client, Databases, Permission, Role } from 'node-appwrite';
+import { Client, Databases, ID, Permission, Role } from 'node-appwrite';
 
 const endpoint = process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
 const projectId = process.env.APPWRITE_PROJECT_ID;
@@ -288,7 +288,7 @@ async function runSetup() {
 
   for (const res of resultsData) {
     try {
-      await databases.createDocument(DATABASE_ID, COLLECTIONS.RESULTS, 'ID.unique()', {
+      await databases.createDocument(DATABASE_ID, COLLECTIONS.RESULTS, ID.unique(), {
         eventId: res.eventId,
         teamId: res.teamId,
         position: res.position,
@@ -310,7 +310,7 @@ async function runSetup() {
 
   for (const adm of adminsData) {
     try {
-      await databases.createDocument(DATABASE_ID, COLLECTIONS.AUTHORIZED_ADMINS, 'ID.unique()', {
+      await databases.createDocument(DATABASE_ID, COLLECTIONS.AUTHORIZED_ADMINS, ID.unique(), {
         email: adm.email,
         name: adm.name,
         active: adm.active,
