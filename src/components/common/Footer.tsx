@@ -7,12 +7,12 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenRules }) => {
   return (
-    <footer className="mt-16 border-t border-slate-800 bg-slate-950 py-8 text-slate-400">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+    <footer className="mt-12 border-t border-slate-200 bg-white py-8 text-slate-600 mb-16 sm:mb-0">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           
-          <div>
-            <div className="flex items-center gap-2 font-sports text-sm tracking-wider text-slate-200">
+          <div className="text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-bold tracking-wider text-slate-900">
               <span>SPORTS MEET LIVE 2026</span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -24,16 +24,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRules }) => {
             {onOpenRules && (
               <button
                 onClick={onOpenRules}
-                className="flex items-center gap-1.5 rounded border border-slate-800 bg-slate-900 px-3 py-1.5 text-slate-300 transition-colors hover:border-slate-700 hover:bg-slate-800 hover:text-white"
+                className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-100"
               >
-                <Info className="h-3.5 w-3.5 text-amber-400" />
+                <Info className="h-3.5 w-3.5 text-blue-600" />
                 <span>Scoring Rules</span>
               </button>
             )}
 
             <div className="flex items-center gap-1.5 text-slate-500">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              <span>Phase 1 Production Build</span>
+              <ShieldCheck className="h-4 w-4 text-emerald-600" />
+              <span>Realtime Verified</span>
             </div>
           </div>
 

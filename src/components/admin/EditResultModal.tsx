@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import type { Result, Team, SportsEvent, ScoringRule } from '../../types/models';
+import type { Result, SportsEvent, Team, ScoringRule } from '../../types/models';
 import { resultRepository } from '../../data/repositories';
-import { Edit2, X, AlertCircle, Save } from 'lucide-react';
+import { X, Edit2, AlertCircle } from 'lucide-react';
 
 interface EditResultModalProps {
   isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
   result: Result | null;
   events: SportsEvent[];
   teams: Team[];
   scoringRules: ScoringRule[];
-  onClose: () => void;
-  onSuccess: () => void;
 }
 
 export const EditResultModal: React.FC<EditResultModalProps> = ({
   isOpen,
+  onClose,
+  onSuccess,
   result,
   events,
   teams,
   scoringRules,
-  onClose,
-  onSuccess,
 }) => {
   const [selectedEventId, setSelectedEventId] = useState<string>('');
   const [selectedTeamId, setSelectedTeamId] = useState<string>('');
   const [participantName, setParticipantName] = useState<string>('');
   const [selectedPosition, setSelectedPosition] = useState<number>(1);
-  const [customPoints, setCustomPoints] = useState<number>(10);
+  const [customPoints, setCustomPoints] = useState<number>(0);
   
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -49,26 +49,23 @@ export const EditResultModal: React.FC<EditResultModalProps> = ({
     }
   }, [selectedPosition, scoringRules]);
 
-  if (!isOpen || !result) return null;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resultRepository.editResult) {
-      alert('Editing results is only supported in Supabase or mock repository.');
-      return;
-    }
+    if (!result || !selectedEventId || !selectedTeamId) return;
 
     try {
       setIsSubmitting(true);
       setErrorMsg(null);
 
-      await resultRepository.editResult(result.id, {
-        eventId: selectedEventId,
-        teamId: selectedTeamId,
-        participantName: participantName.trim() || undefined,
-        position: selectedPosition,
-        points: customPoints,
-      });
+      if (resultRepository.editResult) {
+        await resultRepository.editResult(result.id, {
+          eventId: selectedEventId,
+          teamId: selectedTeamId,
+          participantName: participantName.trim() || undefined,
+          position: selectedPosition,
+          points: Number(customPoints),
+        });
+      }
 
       onSuccess();
       onClose();
@@ -79,43 +76,41 @@ export const EditResultModal: React.FC<EditResultModalProps> = ({
     }
   };
 
+  if (!isOpen || !result) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl space-y-4">
         
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <Edit2 className="h-5 w-5 text-amber-500" />
-            <h2 className="font-sports text-xl text-white">EDIT EVENT RESULT</h2>
+            <Edit2 className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">Edit Recorded Result</h3>
           </div>
           <button
             onClick={onClose}
-            disabled={isSubmitting}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {errorMsg && (
-          <div className="flex items-center gap-2 rounded-lg border border-red-800/60 bg-red-950/40 p-3 text-xs text-red-300">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-          
-          {/* Select Event */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-              Select Event
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Event
             </label>
             <select
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
               required
             >
               {events.map((ev) => (
@@ -126,15 +121,14 @@ export const EditResultModal: React.FC<EditResultModalProps> = ({
             </select>
           </div>
 
-          {/* Select Team */}
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-              Select Team
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Team
             </label>
             <select
               value={selectedTeamId}
               onChange={(e) => setSelectedTeamId(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
               required
             >
               {teams.map((tm) => (
@@ -145,24 +139,22 @@ export const EditResultModal: React.FC<EditResultModalProps> = ({
             </select>
           </div>
 
-          {/* Participant Name (Optional for team events) */}
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1 font-mono">
-              Participant Name <span className="text-[10px] text-slate-400 font-normal lowercase">(optional for team events)</span>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Participant Name
             </label>
             <input
               type="text"
-              placeholder="e.g. Liyan Nechikaden (Leave blank for team events)"
+              placeholder="e.g. Liyan (S3 CSE) — Leave blank for team events"
               value={participantName}
               onChange={(e) => setParticipantName(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none shadow-xs"
             />
           </div>
 
-          {/* Position Placement */}
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1.5">
-              Awarded Position Rank
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Position & Points
             </label>
             <div className="grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map((pos) => (
@@ -170,44 +162,34 @@ export const EditResultModal: React.FC<EditResultModalProps> = ({
                   key={pos}
                   type="button"
                   onClick={() => setSelectedPosition(pos)}
-                  className={`rounded-xl border p-2.5 font-sports text-sm transition-all ${
+                  className={`h-11 rounded-xl border text-xs font-bold transition-all ${
                     selectedPosition === pos
-                      ? 'border-amber-500 bg-amber-500/20 text-amber-400 font-bold'
-                      : 'border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700'
+                      ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-xs'
+                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
-                  #{pos} Place
+                  {pos === 1 ? '🥇 1st' : pos === 2 ? '🥈 2nd' : pos === 3 ? '🥉 3rd' : '4th'}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Points Breakdown */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 flex items-center justify-between">
-            <span className="text-slate-400 font-medium">Points to Award:</span>
-            <span className="font-sports text-lg text-amber-400">{customPoints} PTS</span>
-          </div>
-
-          {/* Submit Actions */}
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              disabled={isSubmitting}
-              className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+              className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 rounded-xl bg-amber-500 px-5 py-2.5 font-sports text-sm text-slate-950 hover:bg-amber-400 active:scale-98 disabled:opacity-50 transition-all font-bold shadow-lg"
+              className="h-11 rounded-xl bg-blue-600 px-5 text-xs font-extrabold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
             >
-              <Save className="h-4 w-4" />
-              <span>{isSubmitting ? 'SAVING...' : 'SAVE CHANGES'}</span>
+              {isSubmitting ? 'Updating...' : 'Update Result'}
             </button>
           </div>
-
         </form>
 
       </div>

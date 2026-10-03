@@ -42,7 +42,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     startTy: 0,
   });
 
-  // Load natural dimensions of uploaded image
   useEffect(() => {
     if (!imageUrl) return;
     const img = new Image();
@@ -52,7 +51,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     img.src = imageUrl;
   }, [imageUrl]);
 
-  // Synchronize state when opening modal or changing props
   useEffect(() => {
     if (isOpen) {
       setZoomRatio(cropConfig?.zoomRatio || 1);
@@ -62,12 +60,10 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     }
   }, [isOpen, cropConfig]);
 
-  // Derived calculations
   const effDims = imgDims ? getEffectiveImageDimensions(imgDims, rotation) : null;
   const minScale = imgDims ? calculateMinCoverScale(imgDims, cropFrame, rotation) : 1;
   const currentScale = minScale * zoomRatio;
 
-  // Helper to safely set clamped translation
   const updateClampedTranslation = useCallback((tx: number, ty: number, scaleVal: number, rotVal: number) => {
     if (!imgDims) return;
     const clamped = clampTranslation(tx, ty, imgDims, cropFrame, scaleVal, rotVal);
@@ -75,7 +71,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     setTranslateY(clamped.translateY);
   }, [imgDims, cropFrame]);
 
-  // When zoom or rotation changes, ensure translation is instantly clamped
   useEffect(() => {
     if (imgDims) {
       updateClampedTranslation(translateX, translateY, currentScale, rotation);
@@ -84,7 +79,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Pointer dragging handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -102,8 +96,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
 
-    // Direct 1:1 displacement mapping scaled by crop viewport ratio
-    // Assume crop viewport box display width is approx 440px vs 900px canvas frame
     const displayFactor = cropFrame.width / 440;
     const newTx = dragStartRef.current.startTx + (dx * displayFactor);
     const newTy = dragStartRef.current.startTy + (dy * displayFactor);
@@ -149,7 +141,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     onSave(cropState);
   };
 
-  // Presets
   const applyPreset = (preset: 'center' | 'top' | 'bottom' | 'left' | 'right') => {
     if (!imgDims) return;
     const { maxTranslateX, maxTranslateY } = calculatePanBounds(imgDims, cropFrame, currentScale, rotation);
@@ -177,53 +168,50 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     }
   };
 
-  // DOM Display transform calculations
   const displayW = effDims ? effDims.width * currentScale : 0;
   const displayH = effDims ? effDims.height * currentScale : 0;
 
-  // Percentage offsets relative to viewport box for CSS translate
   const percentX = (translateX / cropFrame.width) * 100;
   const percentY = (translateY / cropFrame.height) * 100;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-3 sm:p-4 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-2xl flex flex-col max-h-[94vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 p-3 sm:p-4 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl flex flex-col max-h-[94vh] overflow-y-auto">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <Crop className="h-5 w-5 text-amber-500" />
-            <h2 className="font-sports text-xl text-white">ADJUST PHOTO CROP</h2>
+            <Crop className="h-5 w-5 text-blue-600" />
+            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">Adjust Photo View & Crop</h2>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-400 mt-2 gap-1">
-          <span>Move and zoom the photo to choose what appears in the poster. Everything inside the frame will appear in the poster.</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 mt-2 gap-1">
+          <span>Pan and zoom the photo. Everything inside the frame will be rendered in the poster.</span>
           {imgDims && (
-            <span className="font-mono text-amber-400 text-[11px] shrink-0">
-              Original: {imgDims.width}×{imgDims.height}px
+            <span className="font-mono text-blue-700 font-bold text-[11px] shrink-0">
+              {imgDims.width}×{imgDims.height}px
             </span>
           )}
         </div>
 
-        {/* Fixed Crop Viewport Frame (Guaranteed 100% Covered) */}
+        {/* Fixed Crop Viewport Frame */}
         <div className="my-4 relative">
           <div
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
-            className={`relative mx-auto w-full max-w-[460px] aspect-[900/670] overflow-hidden rounded-xl border-2 border-amber-400 bg-slate-950 cursor-grab select-none shadow-2xl touch-none ${
-              isDragging ? 'cursor-grabbing border-amber-300 ring-4 ring-amber-500/30' : ''
+            className={`relative mx-auto w-full max-w-[460px] aspect-[900/670] overflow-hidden rounded-xl border-2 border-blue-600 bg-slate-950 cursor-grab select-none shadow-md touch-none ${
+              isDragging ? 'cursor-grabbing border-blue-500 ring-4 ring-blue-500/20' : ''
             }`}
           >
-            {/* Scaled & Clamped Image Element */}
             {imgDims && (
               <div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -244,48 +232,45 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               </div>
             )}
 
-            {/* Rule of Thirds Guide Grid Overlay */}
-            <div className="pointer-events-none absolute inset-0 z-10 grid grid-cols-3 grid-rows-3 border border-amber-400/40">
-              <div className="border-r border-b border-amber-400/30" />
-              <div className="border-r border-b border-amber-400/30" />
-              <div className="border-b border-amber-400/30" />
-              <div className="border-r border-b border-amber-400/30" />
-              <div className="border-r border-b border-amber-400/30" />
-              <div className="border-b border-amber-400/30" />
-              <div className="border-r border-amber-400/30" />
-              <div className="border-r border-amber-400/30" />
+            {/* Grid Overlay */}
+            <div className="pointer-events-none absolute inset-0 z-10 grid grid-cols-3 grid-rows-3 border border-white/30">
+              <div className="border-r border-b border-white/20" />
+              <div className="border-r border-b border-white/20" />
+              <div className="border-b border-white/20" />
+              <div className="border-r border-b border-white/20" />
+              <div className="border-r border-b border-white/20" />
+              <div className="border-b border-white/20" />
+              <div className="border-r border-white/20" />
+              <div className="border-r border-white/20" />
               <div />
             </div>
 
-            {/* Drag helper indicator */}
-            <div className="pointer-events-none absolute top-3 left-3 z-20 flex items-center gap-1.5 rounded-md bg-slate-950/80 px-2.5 py-1 text-[11px] font-medium text-amber-400 border border-amber-500/40 backdrop-blur-md shadow-md">
-              <Move className="h-3.5 w-3.5" />
-              <span>Drag photo to align inside frame</span>
+            <div className="pointer-events-none absolute top-3 left-3 z-20 flex items-center gap-1.5 rounded-lg bg-slate-900/80 px-2.5 py-1 text-[11px] font-bold text-white border border-slate-700 backdrop-blur-md shadow-xs">
+              <Move className="h-3.5 w-3.5 text-blue-400" />
+              <span>Drag photo inside frame</span>
             </div>
             
-            <div className="pointer-events-none absolute bottom-3 right-3 z-20 flex items-center gap-1 rounded bg-slate-950/80 px-2 py-0.5 text-[10px] font-mono text-emerald-400 border border-slate-800">
-              Poster Frame ({cropFrame.width}×{cropFrame.height})
+            <div className="pointer-events-none absolute bottom-3 right-3 z-20 flex items-center gap-1 rounded bg-slate-900/80 px-2 py-0.5 text-[10px] font-mono text-emerald-400 border border-slate-700">
+              {cropFrame.width}×{cropFrame.height}
             </div>
           </div>
         </div>
 
         {/* Controls Panel */}
-        <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-950 p-4">
-          
-          {/* Zoom Slider (Minimum value = 100% = Minimum Cover Scale) */}
+        <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
           <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="font-semibold text-slate-300 flex items-center gap-1">
-                <ZoomIn className="h-3.5 w-3.5 text-amber-400" /> Zoom Level
+            <div className="flex justify-between text-xs font-bold text-slate-700">
+              <span className="flex items-center gap-1">
+                <ZoomIn className="h-3.5 w-3.5 text-blue-600" /> Zoom Level
               </span>
-              <span className="font-mono text-amber-400 font-bold">{Math.round(zoomRatio * 100)}%</span>
+              <span className="font-mono text-blue-700 font-extrabold">{Math.round(zoomRatio * 100)}%</span>
             </div>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setZoomRatio(prev => Math.max(1, parseFloat((prev - 0.1).toFixed(2))))}
-                className="rounded bg-slate-800 p-1.5 text-slate-300 hover:text-white transition-colors"
-                title="Zoom out to cover scale"
+                className="h-9 w-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-colors"
+                title="Zoom out"
               >
                 <ZoomOut className="h-4 w-4" />
               </button>
@@ -296,12 +281,12 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 step="0.02"
                 value={zoomRatio}
                 onChange={(e) => setZoomRatio(parseFloat(e.target.value))}
-                className="flex-1 accent-amber-500 cursor-pointer"
+                className="flex-1 accent-blue-600 cursor-pointer"
               />
               <button
                 type="button"
                 onClick={() => setZoomRatio(prev => Math.min(3, parseFloat((prev + 0.1).toFixed(2))))}
-                className="rounded bg-slate-800 p-1.5 text-slate-300 hover:text-white transition-colors"
+                className="h-9 w-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-colors"
                 title="Zoom in"
               >
                 <ZoomIn className="h-4 w-4" />
@@ -309,28 +294,27 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             </div>
           </div>
 
-          {/* Presets & Utility Controls */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">Presets:</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-slate-600">Presets:</span>
               <button
                 type="button"
                 onClick={() => applyPreset('top')}
-                className="rounded border border-slate-800 bg-slate-900 px-2.5 py-1 text-[11px] text-slate-300 hover:text-amber-400 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-100"
               >
-                Top / Head
+                Top
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('center')}
-                className="rounded border border-slate-800 bg-slate-900 px-2.5 py-1 text-[11px] text-slate-300 hover:text-amber-400 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-100"
               >
                 Center
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('bottom')}
-                className="rounded border border-slate-800 bg-slate-900 px-2.5 py-1 text-[11px] text-slate-300 hover:text-amber-400 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-100"
               >
                 Bottom
               </button>
@@ -340,43 +324,40 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               <button
                 type="button"
                 onClick={handleRotate}
-                className="flex items-center gap-1 rounded border border-slate-800 bg-slate-900 px-2.5 py-1 text-xs text-slate-300 hover:text-white transition-colors"
-                title="Rotate 90 degrees"
+                className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
               >
-                <RotateCw className="h-3.5 w-3.5 text-amber-400" />
+                <RotateCw className="h-3.5 w-3.5 text-blue-600" />
                 <span>Rotate {rotation}°</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleReset}
-                className="flex items-center gap-1 rounded border border-slate-800 bg-slate-900 px-2.5 py-1 text-xs text-slate-400 hover:text-slate-200 transition-colors"
-                title="Reset crop to minimum cover"
+                className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
                 <span>Reset</span>
               </button>
             </div>
           </div>
-
         </div>
 
-        {/* Modal Actions Footer */}
-        <div className="flex items-center justify-end gap-3 pt-4 mt-2 border-t border-slate-800">
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-2 pt-3 mt-1 border-t border-slate-100">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleApply}
-            className="flex items-center gap-1.5 rounded-xl bg-amber-500 px-5 py-2.5 font-sports text-sm text-slate-950 hover:bg-amber-400 transition-colors shadow-lg font-bold"
+            className="h-11 flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 text-xs font-extrabold text-white hover:bg-blue-700 transition-colors shadow-xs"
           >
             <Check className="h-4 w-4 stroke-[3]" />
-            <span>{isInitialUpload ? 'APPLY CROP & UPLOAD' : 'APPLY CROP'}</span>
+            <span>{isInitialUpload ? 'Apply & Save Crop' : 'Apply Crop'}</span>
           </button>
         </div>
 

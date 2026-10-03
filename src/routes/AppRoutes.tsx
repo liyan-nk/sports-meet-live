@@ -1,6 +1,7 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
+import { HomePage } from '../pages/HomePage';
 import { StandingsPage } from '../pages/StandingsPage';
 import { EventsPage } from '../pages/EventsPage';
 import { ResultsPage } from '../pages/ResultsPage';
@@ -14,8 +15,8 @@ export const AppRoutes: React.FC = () => {
   return (
     <AppLayout>
       <Routes>
-        <Route path="/" element={<StandingsPage />} />
-        <Route path="/standings" element={<Navigate to="/" replace />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/standings" element={<StandingsPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { TeamStanding } from '../../types/models';
 import { StandingCard } from './StandingCard';
+import { Trophy } from 'lucide-react';
 
 interface StandingsTableProps {
   standings: TeamStanding[];
@@ -10,8 +11,8 @@ interface StandingsTableProps {
 export const StandingsTable: React.FC<StandingsTableProps> = ({ standings }) => {
   if (!standings || standings.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-12 text-center">
-        <p className="text-sm text-slate-400">No standings data available.</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center">
+        <p className="text-sm font-medium text-slate-500">No standings data available yet.</p>
       </div>
     );
   }
@@ -19,18 +20,8 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings }) => 
   return (
     <div className="space-y-6">
       
-      {/* Table Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-          <h2 className="font-sports text-xl tracking-wider text-white">
-            CURRENT OVERALL STANDINGS
-          </h2>
-        </div>
-      </div>
-
-      {/* Mobile-first Cards Stack */}
-      <div className="space-y-3">
+      {/* Mobile Stacked Ranking Cards */}
+      <div className="space-y-3 sm:hidden">
         {standings.map((item, index) => (
           <StandingCard
             key={item.team.id}
@@ -40,44 +31,67 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings }) => 
         ))}
       </div>
 
-      {/* Accessible Tabular View for Desktop / Screen Readers */}
-      <div className="mt-8 hidden sm:block overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
-        <table className="w-full text-left text-sm text-slate-300">
-          <thead className="border-b border-slate-800 bg-slate-900 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+      {/* Desktop Clean Table View */}
+      <div className="hidden sm:block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
+        <table className="w-full text-left text-sm text-slate-700">
+          <thead className="border-b border-slate-200 bg-slate-50/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
             <tr>
-              <th scope="col" className="py-3.5 px-4 w-16 text-center">POS</th>
+              <th scope="col" className="py-3.5 px-4 w-16 text-center">RANK</th>
               <th scope="col" className="py-3.5 px-4">TEAM</th>
-              <th scope="col" className="py-3.5 px-4 text-center">GOLD</th>
-              <th scope="col" className="py-3.5 px-4 text-center">SILVER</th>
-              <th scope="col" className="py-3.5 px-4 text-center">BRONZE</th>
+              <th scope="col" className="py-3.5 px-4 text-center">RESULTS</th>
               <th scope="col" className="py-3.5 px-4 text-right pr-6">TOTAL POINTS</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
-            {standings.map((item) => (
-              <tr key={item.team.id} className="hover:bg-slate-800/40 transition-colors">
-                <td className="py-3.5 px-4 text-center font-sports text-base font-bold text-white">
-                  #{item.position}
-                </td>
-                <td className="py-3.5 px-4 font-sports text-lg text-white">
-                  {item.team.name}
-                  <span className="ml-2 font-mono text-xs text-slate-400">({item.team.code})</span>
-                </td>
-                <td className="py-3.5 px-4 text-center text-amber-400 font-bold">{item.goldCount}</td>
-                <td className="py-3.5 px-4 text-center text-slate-300 font-semibold">{item.silverCount}</td>
-                <td className="py-3.5 px-4 text-center text-amber-600 font-semibold">{item.bronzeCount}</td>
-                <td className="py-3.5 px-4 text-right pr-6 font-sports text-xl font-bold text-white tabular-nums">
-                  {item.totalPoints} PTS
-                </td>
-              </tr>
-            ))}
+          <tbody className="divide-y divide-slate-100">
+            {standings.map((item) => {
+              const isFirst = item.position === 1;
+              const isSecond = item.position === 2;
+              const isThird = item.position === 3;
+
+              return (
+                <tr
+                  key={item.team.id}
+                  className={`transition-colors ${
+                    isFirst ? 'bg-amber-50/40' : isSecond ? 'bg-slate-50/50' : isThird ? 'bg-orange-50/30' : 'hover:bg-slate-50/60'
+                  }`}
+                >
+                  <td className="py-4 px-4 text-center font-mono text-base font-black">
+                    <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${
+                      isFirst ? 'bg-amber-400 text-amber-950' :
+                      isSecond ? 'bg-slate-200 text-slate-800' :
+                      isThird ? 'bg-orange-300 text-orange-950' :
+                      'bg-slate-100 text-slate-600'
+                    }`}>
+                      0{item.position}
+                    </span>
+                  </td>
+                  <td className="py-4 px-4 font-bold text-slate-900 text-base">
+                    <div className="flex items-center gap-2">
+                      <span>{item.team.name}</span>
+                      <span className="font-mono text-xs text-slate-500 font-semibold">({item.team.code})</span>
+                      {isFirst && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-900 border border-amber-300">
+                          <Trophy className="h-3 w-3" /> Leader
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center text-xs font-semibold text-slate-500">
+                    {item.resultsCount} completed
+                  </td>
+                  <td className="py-4 px-4 text-right pr-6 font-mono text-2xl font-black text-slate-900 tabular-nums">
+                    {item.totalPoints} <span className="text-xs font-bold text-slate-500">PTS</span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       {/* Temporary Display Ordering Footnote */}
-      <div className="pt-2 text-center text-[11px] text-slate-500">
-        * Equal points display ordering is a temporary UI rule. Official tie-break policy will be determined by the Sports Meet committee.
+      <div className="pt-1 text-center text-[11px] text-slate-500">
+        * Equal points display ordering is temporary. Official tie-break rules will be applied per committee guidelines.
       </div>
 
     </div>

@@ -2,14 +2,15 @@
 
 @layer base {
   :root {
-    --bg-main: #0B0F17;
-    --card-bg: #141B2D;
-    --card-border: #1E293B;
-    --text-primary: #F8FAFC;
-    --text-muted: #94A3B8;
-    --accent-gold: #F59E0B;
-    --accent-silver: #CBD5E1;
-    --accent-bronze: #D97706;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --accent-blue: #2563eb;
+    --accent-gold: #d97706;
+    --accent-silver: #64748b;
+    --accent-bronze: #ea580c;
   }
 
   body {
@@ -24,30 +25,33 @@
   }
 }
 
-/* Custom Sports Scoreboard Typography & Utility Classes */
-.font-sports {
-  font-family: 'Impact', 'Trebuchet MS', 'Arial Black', sans-serif;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
+/* Tabular numbers for clean tabular sports scores */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Subtle rank highlights */
-.rank-1-border {
-  border-left: 4px solid #F59E0B;
+/* Crisp card border accents for ranks */
+.rank-1-card {
+  border-left: 4px solid #f59e0b;
 }
 
-.rank-2-border {
-  border-left: 4px solid #94A3B8;
+.rank-2-card {
+  border-left: 4px solid #94a3b8;
 }
 
-.rank-3-border {
-  border-left: 4px solid #D97706;
+.rank-3-card {
+  border-left: 4px solid #ea580c;
 }
 
-.rank-other-border {
-  border-left: 4px solid #334155;
+.rank-other-card {
+  border-left: 4px solid #cbd5e1;
+}
+
+/* Hide scrollbar for smooth chip horizontal scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

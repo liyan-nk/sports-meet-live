@@ -1,55 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import type { SportsEvent } from '../../types/models';
 import { eventRepository } from '../../data/repositories';
-import { Calendar, X, AlertCircle, Save } from 'lucide-react';
+import { X, Edit2, AlertCircle } from 'lucide-react';
 
 interface EditEventModalProps {
   isOpen: boolean;
-  event: SportsEvent | null;
   onClose: () => void;
   onSuccess: () => void;
+  event: SportsEvent | null;
 }
 
 export const EditEventModal: React.FC<EditEventModalProps> = ({
   isOpen,
-  event,
   onClose,
   onSuccess,
+  event,
 }) => {
   const [eventName, setEventName] = useState<string>('');
-  const [category, setCategory] = useState<string>('Athletics');
-  const [status, setStatus] = useState<'upcoming' | 'ongoing' | 'completed' | 'live' | 'archived'>('completed');
-  
+  const [category, setCategory] = useState<string>('Track');
+  const [status, setStatus] = useState<SportsEvent['status']>('completed');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     if (event && isOpen) {
       setEventName(event.name);
-      setCategory(event.category || 'Athletics');
+      setCategory(event.category || 'Track');
       setStatus(event.status || 'completed');
       setErrorMsg(null);
     }
   }, [event, isOpen]);
 
-  if (!isOpen || !event) return null;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!eventRepository.editEvent) {
-      alert('Editing events is only supported in Supabase or mock repository.');
-      return;
-    }
+    if (!event || !eventName.trim()) return;
 
     try {
       setIsSubmitting(true);
       setErrorMsg(null);
 
-      await eventRepository.editEvent(event.id, {
-        name: eventName.trim(),
-        category: category.trim(),
-        status,
-      });
+      if (eventRepository.editEvent) {
+        await eventRepository.editEvent(event.id, {
+          name: eventName.trim(),
+          category,
+          status,
+        });
+      }
 
       onSuccess();
       onClose();
@@ -60,104 +56,93 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
     }
   };
 
+  if (!isOpen || !event) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl space-y-4">
         
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-amber-500" />
-            <h2 className="font-sports text-xl text-white">EDIT EVENT</h2>
+            <Edit2 className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">Edit Event Details</h3>
           </div>
           <button
             onClick={onClose}
-            disabled={isSubmitting}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {errorMsg && (
-          <div className="flex items-center gap-2 rounded-lg border border-red-800/60 bg-red-950/40 p-3 text-xs text-red-300">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-          
-          {/* Event Name */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
               Event Name
             </label>
             <input
               type="text"
-              placeholder="e.g. 100M Men, Football, High Jump"
               value={eventName}
               onChange={(e) => setEventName(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
               required
             />
           </div>
 
-          {/* Category */}
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
               Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
             >
-              <option value="Athletics">Athletics (Track & Field)</option>
-              <option value="Team Games">Team Games (Football, Basketball, Volleyball)</option>
-              <option value="Indoor Games">Indoor Games (Chess, Carrom, Badminton)</option>
-              <option value="Special Events">Special Events</option>
+              <option value="Track">Track</option>
+              <option value="Field">Field</option>
+              <option value="Indoor">Indoor</option>
+              <option value="Team Sport">Team Sport</option>
             </select>
           </div>
 
-          {/* Status */}
           <div>
-            <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-              Event Status
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Status
             </label>
             <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as any)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+              value={status || 'completed'}
+              onChange={(e) => setStatus(e.target.value as SportsEvent['status'])}
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
             >
               <option value="upcoming">Upcoming</option>
-              <option value="ongoing">Live / Ongoing</option>
-              <option value="live">Live Now</option>
+              <option value="in_progress">Live / In Progress</option>
               <option value="completed">Completed</option>
-              <option value="archived">Archived</option>
             </select>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              disabled={isSubmitting}
-              className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+              className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 rounded-xl bg-amber-500 px-5 py-2.5 font-sports text-sm text-slate-950 hover:bg-amber-400 active:scale-98 disabled:opacity-50 transition-all font-bold shadow-lg"
+              className="h-11 rounded-xl bg-blue-600 px-5 text-xs font-extrabold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
             >
-              <Save className="h-4 w-4" />
-              <span>{isSubmitting ? 'SAVING...' : 'UPDATE EVENT'}</span>
+              {isSubmitting ? 'Saving...' : 'Update Event'}
             </button>
           </div>
-
         </form>
 
       </div>

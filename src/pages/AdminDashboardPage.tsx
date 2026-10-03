@@ -79,7 +79,7 @@ export const AdminDashboardPage: React.FC = () => {
   if (isAuthLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
       </div>
     );
   }
@@ -136,47 +136,44 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       
-      {/* Admin Top Header Banner */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-800 bg-slate-900/90 p-5 sm:p-6 shadow-xl">
+      {/* Admin Top Banner */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="font-sports text-lg tracking-wider text-white">SPORTS MEET 2026</span>
-            <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <ShieldCheck className="h-3 w-3" /> AUTHORISED ADMIN
-            </span>
-            <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-400 border border-amber-500/30">
-              DEMO DATASET
+            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Admin Portal</h1>
+            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200 flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5" /> Authorized
             </span>
           </div>
-          <p className="text-xs text-slate-400">
-            Logged in as: <strong className="text-slate-200">{user.email}</strong>
-            {!isAppwriteConfigured && <span className="ml-2 text-amber-400 font-mono text-[10px]">(Local Dev Mode)</span>}
+          <p className="text-xs text-slate-500">
+            Logged in as: <strong className="text-slate-800">{user.email}</strong>
+            {!isAppwriteConfigured && <span className="ml-2 text-amber-600 font-mono text-[10px]">(Mock Mode)</span>}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             to="/admin/admins"
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-emerald-400 hover:bg-slate-700 transition-colors"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
           >
-            <UserCheck className="h-3.5 w-3.5" />
-            <span>Manage Admins</span>
+            <UserCheck className="h-3.5 w-3.5 text-blue-600" />
+            <span>Admins</span>
           </Link>
 
           <button
             onClick={() => loadDashboardData()}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
             title="Refresh dashboard data"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${isLoadingData ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
+            <span>Sync</span>
           </button>
 
           <button
             onClick={() => logout()}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/90 px-3.5 py-2 text-xs font-semibold text-red-400 hover:bg-red-950/40 hover:text-red-300 transition-colors"
+            className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-100 transition-colors"
           >
             <LogOut className="h-3.5 w-3.5" />
             <span>Sign Out</span>
@@ -184,106 +181,99 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Operations Control Hub */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-slate-900 to-slate-900 p-5">
-        <div>
-          <h2 className="font-sports text-xl text-white">EVENT OPERATIONS</h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Record completed event placements, adjust starting points, and trigger live standings updates.
-          </p>
-        </div>
+      {/* Quick Action Buttons Bar */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Quick Actions</h2>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <button
+            onClick={() => setIsAddResultOpen(true)}
+            className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-xs font-extrabold text-white hover:bg-blue-700 shadow-xs active:scale-98 transition-all"
+          >
+            <Plus className="h-4 w-4 stroke-[3]" />
+            <span>+ Add Result</span>
+          </button>
 
-        <div className="flex flex-wrap gap-2.5 w-full sm:w-auto">
+          <button
+            onClick={() => setIsCreateEventOpen(true)}
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+          >
+            <Calendar className="h-4 w-4 text-blue-600" />
+            <span>+ Create Event</span>
+          </button>
+
           <button
             onClick={() => setIsAdjustmentModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2.5 text-xs font-semibold text-slate-300 hover:bg-slate-700 transition-colors"
-            title="Manage pre-system starting points adjustments"
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
           >
-            <SlidersHorizontal className="h-4 w-4 text-slate-400" />
+            <SlidersHorizontal className="h-4 w-4 text-slate-600" />
             <span>Starting Points</span>
           </button>
 
           <Link
             to="/admin/posters"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2.5 text-xs font-semibold text-amber-400 hover:bg-amber-500/20 transition-colors"
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-xs font-bold text-amber-900 hover:bg-amber-100 transition-colors"
           >
-            <Sparkles className="h-4 w-4" />
-            <span>Poster Generator</span>
+            <Sparkles className="h-4 w-4 text-amber-600" />
+            <span>Posters</span>
           </Link>
-
-          <button
-            onClick={() => setIsCreateEventOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition-colors"
-          >
-            <Calendar className="h-4 w-4 text-amber-400" />
-            <span>+ Create Event</span>
-          </button>
-
-          <button
-            onClick={() => setIsAddResultOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-xs font-black text-slate-950 hover:bg-amber-400 shadow-lg active:scale-98 transition-transform"
-          >
-            <Plus className="h-4.5 w-4.5 stroke-[3]" />
-            <span>+ ADD RESULT</span>
-          </button>
         </div>
       </div>
 
-      {/* Main Grid: Standings & Events / Results Operations */}
+      {/* Main Grid: Standings & Results Operations */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Standings Column */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-            <h3 className="font-sports text-lg text-white">CURRENT STANDINGS</h3>
-            <span className="text-[11px] text-slate-400 font-mono">{standings.length} Teams</span>
-          </div>
+        <div className="lg:col-span-1 space-y-5">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Current Leaderboard</h3>
+              <span className="text-[11px] font-semibold text-slate-500 font-mono">{standings.length} Teams</span>
+            </div>
 
-          <div className="space-y-2.5">
-            {standings.map((item) => (
-              <div
-                key={item.team.id}
-                className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/80 p-3"
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`flex h-7 w-7 items-center justify-center rounded font-sports text-xs font-bold ${
-                    item.position === 1 ? 'bg-amber-500 text-slate-950' :
-                    item.position === 2 ? 'bg-slate-300 text-slate-950' :
-                    item.position === 3 ? 'bg-amber-700 text-white' :
-                    'bg-slate-800 text-slate-400'
-                  }`}>
-                    #{item.position}
+            <div className="space-y-2">
+              {standings.map((item) => (
+                <div
+                  key={item.team.id}
+                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className={`flex h-6 w-6 items-center justify-center rounded-lg text-xs font-bold ${
+                      item.position === 1 ? 'bg-amber-400 text-amber-950' :
+                      item.position === 2 ? 'bg-slate-300 text-slate-800' :
+                      item.position === 3 ? 'bg-orange-300 text-orange-950' :
+                      'bg-slate-100 text-slate-600'
+                    }`}>
+                      #{item.position}
+                    </span>
+                    <span className="text-xs font-extrabold text-slate-900">{item.team.name}</span>
                   </div>
-                  <div>
-                    <span className="font-sports text-base text-white">{item.team.name}</span>
-                    <span className="ml-1.5 font-mono text-[10px] text-slate-500">{item.team.code}</span>
-                  </div>
+                  <span className="font-mono text-sm font-black text-slate-900 tabular-nums">
+                    {item.totalPoints} <span className="text-[10px] text-slate-500 font-bold">PTS</span>
+                  </span>
                 </div>
-                <div className="font-sports text-xl text-amber-400 tabular-nums">
-                  {item.totalPoints} <span className="text-xs text-slate-400 font-normal">PTS</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Managed Events Section */}
-          <div className="pt-4 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <h3 className="font-sports text-lg text-white">MANAGED EVENTS</h3>
-              <span className="text-[11px] text-slate-400 font-mono">{events.length} Events</span>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Managed Events</h3>
+              <span className="text-[11px] font-semibold text-slate-500 font-mono">{events.length} Events</span>
             </div>
 
-            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
               {events.map((ev) => (
-                <div key={ev.id} className="flex items-center justify-between rounded-lg border border-slate-800/80 bg-slate-950 p-2.5 text-xs">
+                <div key={ev.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5 text-xs">
                   <div>
-                    <span className="font-sports text-sm text-slate-200 block">{ev.name}</span>
-                    <span className="text-[10px] text-slate-500 uppercase">{ev.status || 'upcoming'}</span>
+                    <span className="font-bold text-slate-900 block">{ev.name}</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-semibold">{ev.status || 'upcoming'}</span>
                   </div>
                   <button
                     onClick={() => setEditingEvent(ev)}
-                    className="rounded p-1 text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition-colors"
-                    title="Edit Event Details"
+                    className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-200 hover:text-blue-600 transition-colors"
+                    title="Edit Event"
                   >
                     <Edit2 className="h-3.5 w-3.5" />
                   </button>
@@ -293,40 +283,40 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent Results Audit Column */}
-        <div className="lg:col-span-2 space-y-6">
+        {/* Results Audit Column */}
+        <div className="lg:col-span-2 space-y-5">
           
-          {/* Results List */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <h3 className="font-sports text-lg text-white">RECENT RESULTS HISTORY</h3>
-              <span className="text-[11px] text-slate-400 font-mono">{recentResults.length} Entries</span>
+          {/* Recent Results History */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Recent Results History</h3>
+              <span className="text-[11px] font-semibold text-slate-500 font-mono">{recentResults.length} Entries</span>
             </div>
 
             {recentResults.length === 0 ? (
-              <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-8 text-center text-xs text-slate-400">
-                No individual results recorded yet. Click "+ ADD RESULT" above to enter event placement scores.
+              <div className="p-6 text-center text-xs text-slate-500">
+                No results recorded yet. Click "+ Add Result" above to add placement scores.
               </div>
             ) : (
-              <div className="divide-y divide-slate-800/80 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40 text-sm">
+              <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-100 text-xs">
                 {recentResults.map((res) => (
-                  <div key={res.id} className="p-3.5 hover:bg-slate-800/30 transition-colors space-y-2">
+                  <div key={res.id} className="p-3 hover:bg-slate-50/60 transition-colors space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-sports text-base text-white">{getEventName(res.eventId)}</span>
-                        <span className={`rounded px-1.5 py-0.2 text-[10px] font-bold ${
-                          res.position === 1 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                          res.position === 2 ? 'bg-slate-400/20 text-slate-300' :
-                          res.position === 3 ? 'bg-amber-700/20 text-amber-600' : 'bg-slate-800 text-slate-400'
+                        <span className="font-extrabold text-slate-900 text-sm">{getEventName(res.eventId)}</span>
+                        <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
+                          res.position === 1 ? 'bg-amber-100 text-amber-900 border border-amber-300' :
+                          res.position === 2 ? 'bg-slate-200 text-slate-800' :
+                          res.position === 3 ? 'bg-orange-100 text-orange-900' : 'bg-slate-100 text-slate-600'
                         }`}>
                           #{res.position} Place
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <div className="font-sports text-lg text-amber-400 tabular-nums">
+                        <span className="font-mono text-sm font-black text-slate-900 tabular-nums">
                           +{res.points} PTS
-                        </div>
+                        </span>
 
                         <Link
                           to={
@@ -334,8 +324,8 @@ export const AdminDashboardPage: React.FC = () => {
                               ? `/admin/posters?name=${encodeURIComponent(res.participantName)}&team=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=individual`
                               : `/admin/posters?name=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=team`
                           }
-                          className="rounded border border-slate-700 bg-slate-800 px-2 py-1 text-[11px] font-semibold text-amber-400 hover:bg-slate-700 transition-colors flex items-center gap-1"
-                          title="Generate poster for this result"
+                          className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-900 hover:bg-amber-100 transition-colors flex items-center gap-1"
+                          title="Generate poster"
                         >
                           <Sparkles className="h-3 w-3" />
                           <span>Poster</span>
@@ -343,35 +333,35 @@ export const AdminDashboardPage: React.FC = () => {
 
                         <button
                           onClick={() => setEditingResult(res)}
-                          className="rounded p-1 text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition-colors"
+                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600 transition-colors"
                           title="Edit Result"
                         >
-                          <Edit2 className="h-4 w-4" />
+                          <Edit2 className="h-3.5 w-3.5" />
                         </button>
 
                         <button
                           onClick={() => setDeletingResult(res)}
-                          className="rounded p-1 text-slate-500 hover:bg-red-950/40 hover:text-red-400 transition-colors"
+                          className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
                           title="Delete Result"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     </div>
 
                     {/* Audit Info Row */}
-                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400 font-mono border-t border-slate-800/40 pt-1.5">
+                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-medium">
                       {res.participantName && (
-                        <span>Participant: <strong className="text-amber-300">{res.participantName}</strong></span>
+                        <span>Participant: <strong className="text-slate-900">{res.participantName}</strong></span>
                       )}
-                      <span>Team: <strong className="text-slate-200">{getTeamName(res.teamId)}</strong></span>
+                      <span>Team: <strong className="text-slate-900">{getTeamName(res.teamId)}</strong></span>
                       {res.createdBy && (
                         <span className="flex items-center gap-1 text-slate-400">
-                          <User className="h-3 w-3 text-slate-500" /> by {res.createdBy}
+                          <User className="h-3 w-3" /> by {res.createdBy}
                         </span>
                       )}
                       {res.createdAt && (
-                        <span className="flex items-center gap-1 text-slate-500">
+                        <span className="flex items-center gap-1 text-slate-400">
                           <Clock className="h-3 w-3" /> {new Date(res.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       )}
@@ -382,51 +372,51 @@ export const AdminDashboardPage: React.FC = () => {
             )}
           </div>
 
-          {/* Standings Adjustments / Starting Points Section */}
-          <div className="space-y-3 pt-4 border-t border-slate-800">
-            <div className="flex items-center justify-between">
+          {/* Starting Points Section */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <div>
-                <h3 className="font-sports text-lg text-white flex items-center gap-2">
-                  <SlidersHorizontal className="h-4 w-4 text-amber-400" />
-                  STARTING POINTS / STANDINGS ADJUSTMENTS
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <SlidersHorizontal className="h-4 w-4 text-blue-600" />
+                  <span>Starting Points Adjustments</span>
                 </h3>
-                <p className="text-[11px] text-slate-400">
-                  Pre-system carryover points clearly separated from official event results.
+                <p className="text-[11px] text-slate-500">
+                  Pre-system points adjustments separated from official event results.
                 </p>
               </div>
 
               <button
                 onClick={() => setIsAdjustmentModalOpen(true)}
-                className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-amber-400 hover:bg-slate-700 transition-colors"
+                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
               >
-                + New Adjustment
+                + Adjust
               </button>
             </div>
 
             {adjustments.length === 0 ? (
-              <div className="rounded-xl border border-slate-800/80 bg-slate-950/40 p-4 text-center text-xs text-slate-500">
+              <div className="p-4 text-center text-xs text-slate-500">
                 No standings adjustments currently recorded.
               </div>
             ) : (
-              <div className="divide-y divide-slate-800/60 rounded-xl border border-slate-800 bg-slate-950 text-xs">
+              <div className="divide-y divide-slate-100 rounded-xl border border-slate-100 bg-white text-xs">
                 {adjustments.map((adj) => (
                   <div key={adj.id} className="p-3 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-sports text-sm text-slate-200">{getTeamName(adj.teamId)}</span>
-                        <span className={`font-mono text-xs font-bold ${adj.points >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <span className="font-bold text-slate-900">{getTeamName(adj.teamId)}</span>
+                        <span className={`font-mono text-xs font-extrabold ${adj.points >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
                           {adj.points >= 0 ? `+${adj.points}` : adj.points} PTS
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{adj.reason || 'Starting Points Adjustment'}</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">{adj.reason || 'Starting Points Adjustment'}</p>
                     </div>
 
                     <button
                       onClick={() => setDeletingAdjustment(adj)}
-                      className="rounded p-1 text-slate-500 hover:bg-red-950/40 hover:text-red-400 transition-colors"
-                      title="Delete adjustment entry"
+                      className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                      title="Delete adjustment"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 ))}
@@ -441,8 +431,7 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Scoring Rules Manager */}
       <ScoringRulesEditor onRulesUpdated={loadDashboardData} />
 
-      {/* --- ALL OPERATIONAL MODALS --- */}
-      
+      {/* Modals */}
       <AddResultModal
         isOpen={isAddResultOpen}
         onClose={() => setIsAddResultOpen(false)}

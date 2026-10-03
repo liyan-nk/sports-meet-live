@@ -8,94 +8,71 @@ interface StandingCardProps {
 }
 
 export const StandingCard: React.FC<StandingCardProps> = ({ standing }) => {
-  const { team, totalPoints, position, goldCount, silverCount, bronzeCount } = standing;
+  const { team, totalPoints, position, resultsCount } = standing;
 
-  // Subtle styling per position
-  const getRankBadgeStyle = (pos: number) => {
-    switch (pos) {
-      case 1:
-        return 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400';
-      case 2:
-        return 'bg-slate-300 text-slate-950 font-bold border border-slate-200';
-      case 3:
-        return 'bg-amber-700 text-white font-bold border border-amber-600';
-      default:
-        return 'bg-slate-800 text-slate-400 font-semibold border border-slate-700';
-    }
-  };
-
-  const getCardBorderStyle = (pos: number) => {
-    switch (pos) {
-      case 1:
-        return 'border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900 to-slate-900 rank-1-border';
-      case 2:
-        return 'border-slate-700/80 bg-gradient-to-r from-slate-400/5 via-slate-900 to-slate-900 rank-2-border';
-      case 3:
-        return 'border-amber-800/40 bg-gradient-to-r from-amber-700/5 via-slate-900 to-slate-900 rank-3-border';
-      default:
-        return 'border-slate-800 bg-slate-900/60 rank-other-border';
-    }
-  };
+  const isFirst = position === 1;
+  const isSecond = position === 2;
+  const isThird = position === 3;
 
   return (
     <div
-      className={`group relative flex items-center justify-between rounded-xl border p-4 sm:p-5 transition-all duration-200 hover:border-slate-600 hover:shadow-lg ${getCardBorderStyle(
-        position
-      )}`}
+      className={`group relative flex items-center justify-between rounded-2xl p-4 transition-all border ${
+        isFirst
+          ? 'bg-amber-50/60 border-amber-200 shadow-xs'
+          : isSecond
+          ? 'bg-slate-50/90 border-slate-200'
+          : isThird
+          ? 'bg-orange-50/50 border-orange-200'
+          : 'bg-white border-slate-200 hover:border-slate-300'
+      }`}
     >
-      {/* Left Column: Position + Team Info */}
-      <div className="flex items-center gap-3 sm:gap-5">
-        {/* Position Number */}
+      {/* Left Column: Rank + Team Info */}
+      <div className="flex items-center gap-3.5 sm:gap-5">
+        {/* Rank Badge */}
         <div
-          className={`flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg font-sports text-xl sm:text-2xl tabular-nums ${getRankBadgeStyle(
-            position
-          )}`}
+          className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-mono text-base sm:text-lg font-black tabular-nums ${
+            isFirst
+              ? 'bg-amber-400 text-amber-950 border border-amber-500/30'
+              : isSecond
+              ? 'bg-slate-200 text-slate-800 border border-slate-300'
+              : isThird
+              ? 'bg-orange-300 text-orange-950 border border-orange-400/30'
+              : 'bg-slate-100 text-slate-600 border border-slate-200'
+          }`}
         >
-          {position}
+          {position < 10 ? `0${position}` : position}
         </div>
 
         {/* Team Details */}
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-sports text-xl sm:text-2xl tracking-wide text-white group-hover:text-amber-400 transition-colors">
+            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
               {team.name}
             </h3>
-            <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 uppercase border border-slate-700">
+            <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-500 uppercase border border-slate-200">
               {team.code}
             </span>
-            {position === 1 && (
-              <span className="hidden sm:inline-flex items-center gap-1 rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-400 border border-amber-500/30">
-                <Trophy className="h-3 w-3" /> LEADER
+            {isFirst && (
+              <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-900 border border-amber-300">
+                <Trophy className="h-3 w-3" /> Leader
               </span>
             )}
           </div>
 
-          {/* Event Medals / Breakdowns */}
-          <div className="mt-1 flex items-center gap-3 text-xs text-slate-400">
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-full bg-amber-400" />
-              <span>{goldCount} Gold</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-full bg-slate-300" />
-              <span>{silverCount} Silver</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-full bg-amber-600" />
-              <span>{bronzeCount} Bronze</span>
-            </div>
-          </div>
+          <p className="mt-0.5 text-xs text-slate-500 font-medium">
+            {resultsCount} {resultsCount === 1 ? 'result' : 'results'} completed
+          </p>
         </div>
       </div>
 
-      {/* Right Column: Points Hero */}
+      {/* Right Column: Points */}
       <div className="text-right shrink-0">
-        <div className="font-sports text-3xl sm:text-4xl text-white tabular-nums tracking-tight">
+        <span className="text-2xl sm:text-3xl font-black text-slate-900 font-mono tabular-nums">
           {totalPoints}
-        </div>
-        <div className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
-          POINTS
-        </div>
+        </span>
+        <span className="text-[11px] font-bold text-slate-500 block uppercase tracking-wider">
+          PTS
+        </span>
       </div>
     </div>
   );

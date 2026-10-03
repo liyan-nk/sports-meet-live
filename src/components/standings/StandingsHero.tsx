@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw, Award } from 'lucide-react';
+import { RefreshCw, Info } from 'lucide-react';
 
 interface StandingsHeroProps {
   lastUpdated: string | null;
@@ -19,63 +19,37 @@ export const StandingsHero: React.FC<StandingsHeroProps> = ({
     : 'Just now';
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/90 p-6 sm:p-8 shadow-xl">
-      {/* Editorial Background Lines */}
-      <div className="absolute top-0 right-0 -mt-10 -mr-10 h-48 w-48 rounded-full bg-slate-800/30 blur-2xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/3 -mb-10 h-40 w-40 rounded-full bg-amber-500/5 blur-3xl pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        
-        {/* Left Title Column */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <span className="font-sports text-sm tracking-widest text-amber-500">
-              SPORTS MEET 2026
-            </span>
-            <span className="h-1 w-1 rounded-full bg-slate-600" />
-            <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
-              LIVE POINT TABLE
-            </span>
-          </div>
-
-          <h1 className="font-sports text-4xl sm:text-5xl lg:text-6xl tracking-tight text-white leading-none">
-            LIVE STANDINGS
-          </h1>
-
-          <p className="max-w-xl text-xs sm:text-sm text-slate-400">
-            Real-time overall team scores calculated dynamically from completed events.
-          </p>
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-200">
+      <div>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Standings</h1>
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Live
+          </span>
         </div>
+        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+          Official points leaderboard · Updated <span className="font-semibold text-slate-700 font-mono">{formattedTime}</span>
+        </p>
+      </div>
 
-        {/* Right Action & Info Box */}
-        <div className="flex flex-wrap items-center gap-3 shrink-0">
-          
-          <button
-            onClick={onOpenRules}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-medium text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800 hover:text-white"
-          >
-            <Award className="h-4 w-4 text-amber-400" />
-            <span>Scoring Rules</span>
-          </button>
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={onOpenRules}
+          className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-xs"
+        >
+          <Info className="h-4 w-4 text-blue-600" />
+          <span>Rules</span>
+        </button>
 
-          <button
-            onClick={onRefresh}
-            disabled={isRefreshing}
-            className="flex items-center gap-2 rounded-lg bg-amber-500 px-3.5 py-2 text-xs font-bold text-slate-950 transition-colors hover:bg-amber-400 active:scale-95 disabled:opacity-50"
-            title="Refresh current standings"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
-
-          <div className="w-full text-right sm:w-auto">
-            <div className="text-[11px] text-slate-500 font-medium">
-              LAST UPDATED: <span className="tabular-nums font-semibold text-slate-300">{formattedTime}</span>
-            </div>
-          </div>
-
-        </div>
-
+        <button
+          onClick={onRefresh}
+          disabled={isRefreshing}
+          className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors shadow-xs active:scale-95 disabled:opacity-50"
+        >
+          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          <span>Sync</span>
+        </button>
       </div>
     </div>
   );

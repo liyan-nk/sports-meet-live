@@ -59,7 +59,6 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
     }
   }, [isOpen, loadFormData]);
 
-  // Calculate points automatically based on selected position
   const activeRule = scoringRules.find(r => r.position === selectedPosition);
   const calculatedPoints = activeRule ? activeRule.points : (selectedPosition === 1 ? 10 : selectedPosition === 2 ? 5 : selectedPosition === 3 ? 3 : 0);
 
@@ -98,33 +97,33 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl space-y-4">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <PlusCircle className="h-5 w-5 text-amber-500" />
-            <h3 className="font-sports text-lg tracking-wide text-white">RECORD EVENT RESULT</h3>
+            <PlusCircle className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">Record Event Result</h3>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {errorMsg && (
-          <div className="flex items-start gap-2.5 rounded-lg border border-red-800/60 bg-red-950/40 p-3 text-xs text-red-300">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
+          <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="flex items-center gap-2 rounded-lg border border-emerald-800/60 bg-emerald-950/40 p-3 text-xs text-emerald-300">
-            <CheckCircle className="h-4 w-4 shrink-0 text-emerald-400" />
+          <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
+            <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -134,14 +133,14 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
           
           {/* Select Event */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                 Event
               </label>
               <button
                 type="button"
                 onClick={onOpenCreateEvent}
-                className="text-[11px] text-amber-400 hover:underline font-medium"
+                className="text-xs text-blue-600 hover:underline font-bold"
               >
                 + Create New Event
               </button>
@@ -149,7 +148,7 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
             <select
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
               required
             >
               {events.map((ev) => (
@@ -162,13 +161,13 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
 
           {/* Select Team */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
               Team
             </label>
             <select
               value={selectedTeamId}
               onChange={(e) => setSelectedTeamId(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
               required
             >
               {teams.map((tm) => (
@@ -179,23 +178,23 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
             </select>
           </div>
 
-          {/* Participant Name (Optional for team events) */}
+          {/* Participant Name */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Participant Name <span className="text-[11px] text-slate-400 font-normal lowercase">(optional for team events)</span>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Participant Name <span className="text-slate-400 font-normal lowercase">(optional for team events)</span>
             </label>
             <input
               type="text"
-              placeholder="e.g. Liyan Nechikaden (Leave blank for team events)"
+              placeholder="e.g. Liyan (S3 CSE) — Leave blank for team events"
               value={participantName}
               onChange={(e) => setParticipantName(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+              className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none shadow-xs"
             />
           </div>
 
           {/* Position Selection */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
               Position
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -204,45 +203,45 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
                   key={pos}
                   type="button"
                   onClick={() => setSelectedPosition(pos)}
-                  className={`rounded-lg border p-2.5 text-center font-sports text-sm transition-all ${
+                  className={`h-11 rounded-xl border text-xs font-bold transition-all ${
                     selectedPosition === pos
-                      ? 'border-amber-500 bg-amber-500/20 text-amber-400 font-bold'
-                      : 'border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700 hover:text-white'
+                      ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-xs'
+                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
-                  {pos === 1 ? '1st Place' : pos === 2 ? '2nd Place' : pos === 3 ? '3rd Place' : '4th Place'}
+                  {pos === 1 ? '🥇 1st' : pos === 2 ? '🥈 2nd' : pos === 3 ? '🥉 3rd' : '4th'}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Points Preview (Calculated automatically from scoring rules) */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 flex items-center justify-between">
+          {/* Points Preview */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center justify-between">
             <div>
-              <span className="text-xs font-medium text-slate-400 block">Awarded Points</span>
+              <span className="text-xs font-bold text-slate-900 block">Awarded Points</span>
               <span className="text-[11px] text-slate-500">Auto-calculated from position #{selectedPosition} rule</span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="font-sports text-3xl font-bold text-amber-400 tabular-nums">
+              <span className="text-2xl font-black text-blue-600 font-mono tabular-nums">
                 +{calculatedPoints}
               </span>
-              <span className="text-xs font-bold text-slate-400">PTS</span>
+              <span className="text-xs font-bold text-slate-500">PTS</span>
             </div>
           </div>
 
-          {/* Submit */}
+          {/* Submit Action */}
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs font-semibold text-slate-300 hover:bg-slate-700"
+              className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-lg bg-amber-500 px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-amber-400 disabled:opacity-50 transition-colors"
+              className="h-11 rounded-xl bg-blue-600 px-5 text-xs font-extrabold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
             >
               {isSubmitting ? 'Saving...' : 'Save Result'}
             </button>
