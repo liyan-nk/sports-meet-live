@@ -1,57 +1,51 @@
-# SPORTS MEET LIVE 2026 — EDITORIAL SPORTS SCOREBOARD DESIGN SYSTEM (PHASE 7.5)
+# SPORTS MEET LIVE 2026 — PRODUCT EXPERIENCE DESIGN SYSTEM (PHASE 9)
 
-A bold, clean, typography-first sports scoreboard presentation layer designed for effortless mobile scanning and confident desktop presentation.
+A mobile-first live sports app presentation layer built for competition excitement, scannability, un-cramped layouts, and zero control text wrapping.
 
 ---
 
 ## 1. Core Principles
 
-- **Editorial Sports Scoreboard**: Calm, spacious, high-contrast, confident. Looks like a real live college sports meet app, not a SaaS dashboard or analytics tool.
-- **Typography-First Hierarchy**: Large readable typography. No tiny 10px–12px text anywhere in normal content.
-- **Single Page Scroll**: The page scrolls naturally as one unified view. NO nested scrolling containers, NO fixed-height scrolling panels, NO split-viewport scrolling.
-- **De-Cardified Presentation**: Avoid card-ifying every row or wrapping lists inside nested rounded borders. Prefer clean editorial rows with subtle horizontal dividers (`divide-y divide-slate-200`), generous vertical padding, and whitespace.
-- **Mobile-First Composition**: Designed specifically for 360px–430px wide phone viewports with room to breathe, scaling up to centered 1024px–1440px desktop layouts.
+- **Live Sports Application Experience**: Feels like an official live tournament scoreboard app on a phone screen. Not a SaaS dashboard, CRM, or generic admin template.
+- **Mobile-First Width Protection**: At 360px–430px viewports, controls, headers, and action buttons NEVER wrap awkwardly (e.g. `LIVE SCOREBOARD` or `SIGN OUT` wrapping into 2 lines).
+- **De-Cardified Whitespace Rhythm**: Avoid enclosing every section in outlined boxes or rounded cards. Use typography, spacing (`40px–56px` section gaps), alignment, and subtle horizontal dividers (`divide-y divide-slate-200`) for structural hierarchy.
+- **Competition & Scoreboard Identity**: Prominent tabular numbers (`32px–40px font-mono tabular-nums`), rank badges (`01`, `02`, `03`), points gap indicators (`-6`, `-19`, `-25`), and live status indicators (`LIVE NOW`, `UP NEXT`, `COMPLETED / FINAL`).
+- **Unified Vertical Page Scroll**: Single primary vertical document scroll. NO nested scrollable containers or fixed-height viewports.
 
 ---
 
-## 2. Typography Scale
+## 2. Typography & Hierarchy
 
-- **Page Titles**: `32px – 40px` (`text-3xl sm:text-4xl font-black tracking-tight text-slate-900`)
-- **Section Headers**: `22px – 28px` (`text-xl sm:text-2xl font-bold tracking-tight text-slate-900`)
-- **Standings & Major Numbers**: `32px – 44px` (`text-3xl sm:text-4xl font-black font-mono tabular-nums text-slate-900`)
+- **Hero & Page Titles**: `28px – 36px` (`text-2xl sm:text-4xl font-black text-slate-900 tracking-tight`)
+- **Section Headers**: `20px – 24px` (`text-xl sm:text-2xl font-black text-slate-900 tracking-tight`)
+- **Scoreboard Numbers**: `32px – 44px` (`text-3xl sm:text-4xl font-black font-mono tabular-nums text-slate-900`)
 - **Event & Team Titles**: `18px – 22px` (`text-lg sm:text-xl font-extrabold text-slate-900`)
-- **Participant / Body Text**: `16px – 18px` (`text-base sm:text-lg font-medium text-slate-900`)
-- **Labels & Secondary Metadata**: `14px – 15px` (`text-sm font-semibold text-slate-500`)
-- **Minimum Font Size**: `14px` (`text-sm`). `text-xs` (12px) and `text-[10px]` are strictly forbidden for user content.
+- **Body & Participant Names**: `16px – 18px` (`text-base sm:text-lg font-semibold text-slate-900`)
+- **Metadata & Subtext**: `14px – 15px` (`text-sm font-medium text-slate-500`)
+- **Zero Text Wrapping**: Headings and action labels are allocated sufficient horizontal width and whitespace to render on a single line on 360px phones.
 
 ---
 
-## 3. Color & Visual Palette
+## 3. Button & Action Hierarchy
 
-- **App Background**: Soft warm off-white / light slate (`bg-slate-50`, `#f8fafc`).
-- **Surface**: Pure White (`#ffffff`) for elevated header/navigation and structured scoreboard blocks.
-- **Primary Text**: Near Black / Deep Slate (`text-slate-900`, `#0f172a`).
-- **Secondary Text**: Neutral Slate (`text-slate-500`, `#64748b`).
-- **Dividers & Borders**: Crisp light slate (`border-slate-200`, `#e2e8f0`).
-- **Brand Accent**: Athletic Blue (`bg-blue-600` / `text-blue-600`), used strictly for primary CTAs and active states.
-- **Podium Ranks**:
-  - 1st Place (Gold): Subtle warm gold rank indicator (`bg-amber-400 text-amber-950 font-black`)
-  - 2nd Place (Silver): Cool silver rank indicator (`bg-slate-200 text-slate-800 font-bold`)
-  - 3rd Place (Bronze): Bronze rank indicator (`bg-amber-100 text-amber-900 font-bold`)
+- **Primary CTA**: `h-12 sm:h-14 bg-blue-600 text-white font-extrabold text-base px-6 rounded-xl hover:bg-blue-700 shadow-xs whitespace-nowrap`
+- **Secondary Action**: `h-12 bg-white border border-slate-300 text-slate-800 font-bold text-sm sm:text-base px-5 rounded-xl hover:bg-slate-100 whitespace-nowrap`
+- **Tertiary Action**: `h-10 text-slate-600 hover:text-slate-900 font-bold text-sm px-3 rounded-lg whitespace-nowrap`
+- **Danger Action**: `h-12 bg-red-50 border border-red-200 text-red-800 font-bold text-sm sm:text-base px-5 rounded-xl hover:bg-red-100 whitespace-nowrap`
 
 ---
 
-## 4. Spacing & Touch Boundaries
+## 4. Status & Competition Language
 
-- **Page Padding**: Mobile: `px-4 py-6`, Desktop: `px-8 py-10 max-w-4xl mx-auto`.
-- **Bottom Nav Clearance**: `pb-28 sm:pb-12` on the main page content wrapper.
-- **Row Spacing**: `py-4 sm:py-5` for event & result rows.
-- **Touch Targets**: Minimum 48px height for all interactive buttons and form inputs (`h-12 px-5 text-base`).
+- **`● LIVE NOW`**: Emerald pulse indicator (`bg-emerald-500 animate-pulse text-emerald-900 bg-emerald-100 border-emerald-300`)
+- **`UP NEXT`**: Warm amber timeline tag (`bg-amber-100 text-amber-900 border-amber-300`)
+- **`COMPLETED / FINAL`**: Slate finished tag (`bg-slate-100 text-slate-700 border-slate-300`)
+- **`Points Gap`**: High-contrast difference relative to leader (`-6 PTS`, `-19 PTS`, `-25 PTS`)
 
 ---
 
 ## 5. Navigation & Shell
 
-- **Mobile Navigation**: Simple fixed bottom navigation bar with 5 primary destinations (`Home`, `Standings`, `Events`, `Results`, `Admin`). Large icons and 14px labels.
-- **Desktop Header**: Clean top bar with app title, live status pill, and navigation links.
-- **Unified Vertical Page Scroll**: The browser page window handles all vertical scrolling natively.
+- **App Header**: Compact mobile header (`[SPORTS MEET 2026]` + `● LIVE`), zero text wrapping on 360px.
+- **Bottom Navigation**: Fixed mobile bottom bar (`h-16 z-40 bg-white border-t border-slate-200`).
+- **Modal Layering**: `ModalSheet` renders at `z-[100]` with `document.body.style.overflow = 'hidden'` and sticky bottom action bar.

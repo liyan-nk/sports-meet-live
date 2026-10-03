@@ -12,37 +12,35 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md">
-      <div className="mx-auto max-w-4xl px-4 py-3.5 sm:px-8">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto max-w-4xl px-4 py-3 sm:px-8">
+        <div className="flex items-center justify-between gap-2">
           
-          {/* Brand Logo & Title */}
-          <Link to="/" className="group flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs transition-transform group-hover:scale-105">
+          {/* Brand Logo & Title (Single Line, No Wrapping) */}
+          <Link to="/" className="flex items-center gap-2.5 shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs">
               <Trophy className="h-5 w-5 text-amber-400" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-tight text-slate-900 sm:text-xl">SPORTS MEET</span>
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-black text-slate-700 border border-slate-200">
-                  2026
-                </span>
-              </div>
+            <div className="flex items-center gap-1.5 whitespace-nowrap">
+              <span className="text-base sm:text-xl font-black tracking-tight text-slate-900">SPORTS MEET</span>
+              <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-xs font-black text-slate-700 border border-slate-200">
+                2026
+              </span>
             </div>
           </Link>
 
-          {/* Live Indicator & Desktop Admin Link */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-800">
-              <span className="relative flex h-2.5 w-2.5">
+          {/* Compact Live Indicator & Desktop Admin Link */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-black text-emerald-800 whitespace-nowrap">
+              <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </span>
-              <span>LIVE SCOREBOARD</span>
+              <span>LIVE</span>
             </div>
 
             <Link
               to="/admin"
-              className="hidden sm:flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+              className="hidden sm:flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-1.5 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors whitespace-nowrap"
             >
               <ShieldCheck className="h-4 w-4 text-blue-600" />
               <span>Admin Portal</span>

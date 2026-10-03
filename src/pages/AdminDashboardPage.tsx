@@ -134,27 +134,28 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 sm:space-y-14">
       
-      {/* Admin Header Banner */}
+      {/* Admin Header Banner (Guaranteed No Button Text Wrapping) */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-slate-200">
-        <div className="space-y-1">
+        <div className="space-y-1 min-w-0">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">ADMIN PORTAL</h1>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-900 border border-emerald-300 flex items-center gap-1.5">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">ADMIN PORTAL</h1>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-900 border border-emerald-300 flex items-center gap-1.5 shrink-0">
               <ShieldCheck className="h-4 w-4 text-emerald-700" /> Authorized
             </span>
           </div>
-          <p className="text-sm font-semibold text-slate-500">
-            Official admin control panel · Signed in as: <strong className="text-slate-900">{user.email}</strong>
+          <p className="text-sm font-semibold text-slate-500 truncate">
+            Signed in as: <strong className="text-slate-900">{user.email}</strong>
             {!isAppwriteConfigured && <span className="ml-2 text-amber-700 font-mono text-xs">(Mock Mode)</span>}
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Top Header Controls (Never Wrap!) */}
+        <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/admin/admins"
-            className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+            className="h-10 px-3 sm:px-4 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
           >
             <UserCheck className="h-4 w-4 text-blue-600" />
             <span>Admins</span>
@@ -162,7 +163,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => loadDashboardData()}
-            className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+            className="h-10 px-3 sm:px-4 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
           >
             <RefreshCw className={`h-4 w-4 ${isLoadingData ? 'animate-spin' : ''}`} />
             <span>Sync</span>
@@ -170,22 +171,22 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => logout()}
-            className="flex items-center gap-2 rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-800 hover:bg-red-100 transition-colors"
+            className="h-10 px-3.5 sm:px-4 rounded-xl border border-red-200 bg-red-50 text-xs sm:text-sm font-bold text-red-700 hover:bg-red-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
           >
-            <LogOut className="h-4 w-4 text-red-600" />
+            <LogOut className="h-4 w-4 text-red-600 shrink-0" />
             <span>Sign Out</span>
           </button>
         </div>
       </div>
 
-      {/* Large Obvious Quick Actions */}
+      {/* Operations Quick Actions */}
       <section className="space-y-3">
-        <h2 className="text-sm font-black uppercase tracking-wider text-slate-500">Quick Actions</h2>
+        <h2 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-500">Operations Quick Actions</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <button
             onClick={() => setIsAddResultOpen(true)}
-            className="flex h-14 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-base font-extrabold text-white hover:bg-blue-700 transition-all shadow-xs"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-base font-extrabold text-white hover:bg-blue-700 transition-all shadow-xs whitespace-nowrap"
           >
             <Plus className="h-5 w-5 stroke-[3]" />
             <span>+ ADD RESULT</span>
@@ -193,7 +194,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => setIsCreateEventOpen(true)}
-            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs whitespace-nowrap"
           >
             <Calendar className="h-5 w-5 text-blue-600" />
             <span>+ CREATE EVENT</span>
@@ -201,7 +202,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => setIsAdjustmentModalOpen(true)}
-            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs whitespace-nowrap"
           >
             <SlidersHorizontal className="h-5 w-5 text-slate-700" />
             <span>STARTING POINTS</span>
@@ -209,7 +210,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <Link
             to="/admin/posters"
-            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100/80 px-5 text-base font-extrabold text-amber-950 hover:bg-amber-200 transition-colors shadow-xs"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100/80 px-5 text-base font-extrabold text-amber-950 hover:bg-amber-200 transition-colors shadow-xs whitespace-nowrap"
           >
             <Sparkles className="h-5 w-5 text-amber-700" />
             <span>POSTERS</span>
@@ -235,7 +236,7 @@ export const AdminDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setEditingEvent(ev)}
-                className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors shrink-0"
               >
                 <Edit2 className="h-4 w-4 text-blue-600" />
                 <span>Edit</span>
@@ -253,7 +254,7 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         {recentResults.length === 0 ? (
-          <p className="py-6 text-base text-slate-500">No results recorded yet.</p>
+          <p className="py-4 text-base text-slate-500">No results recorded yet.</p>
         ) : (
           <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
             {recentResults.map((res) => (
