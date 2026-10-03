@@ -21,7 +21,7 @@ export const MobileBottomNav: React.FC = () => {
   };
 
   return (
-    <nav aria-label="Mobile Navigation" className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white sm:hidden shadow-md">
+    <nav aria-label="Mobile Navigation" className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white sm:hidden shadow-md">
       <div className="grid grid-cols-5 h-16 max-w-md mx-auto">
         {navItems.map((item) => {
           const active = isActive(item);
