@@ -8,9 +8,11 @@
     --text-primary: #0f172a;
     --text-muted: #64748b;
     --accent-blue: #2563eb;
-    --accent-gold: #d97706;
-    --accent-silver: #64748b;
-    --accent-bronze: #ea580c;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-main);
   }
 
   body {
@@ -22,32 +24,15 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
 }
 
-/* Tabular numbers for clean tabular sports scores */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Crisp card border accents for ranks */
-.rank-1-card {
-  border-left: 4px solid #f59e0b;
-}
-
-.rank-2-card {
-  border-left: 4px solid #94a3b8;
-}
-
-.rank-3-card {
-  border-left: 4px solid #ea580c;
-}
-
-.rank-other-card {
-  border-left: 4px solid #cbd5e1;
-}
-
-/* Hide scrollbar for smooth chip horizontal scroll */
+/* Hide scrollbar for category filter chips */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

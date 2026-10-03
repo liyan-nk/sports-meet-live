@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useStandings } from '../hooks/useStandings';
 import type { SportsEvent, Result } from '../types/models';
 import { eventRepository, resultRepository } from '../data/repositories';
-import { Trophy, Award, ArrowRight, Zap, RefreshCw } from 'lucide-react';
+import { Trophy, Award, ArrowRight, RefreshCw } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const { standings, isLoading, refresh } = useStandings();
@@ -40,109 +40,124 @@ export const HomePage: React.FC = () => {
   const recentResults = results.slice(0, 4);
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-12">
       
-      {/* 1. TODAY / LIVE SECTION */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+      {/* 1. FRONT PAGE HERO / CURRENT STATUS */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">Today's Highlight</span>
+            <span className="flex h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
+            <h2 className="text-sm font-black uppercase tracking-wider text-emerald-800">
+              Today's Featured Event
+            </h2>
           </div>
           <button
             onClick={handleRefresh}
-            className="flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-600 transition-colors"
+            className="flex items-center gap-1.5 text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>Sync</span>
           </button>
         </div>
 
         {currentEvent ? (
-          <div className="mt-3 flex items-center justify-between gap-3">
-            <div>
-              <span className="inline-block rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-700 border border-blue-200">
+          <div className="py-2">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="rounded-md bg-blue-100 px-3 py-1 text-xs font-black text-blue-800 uppercase tracking-wide">
                 {currentEvent.category}
               </span>
-              <h2 className="mt-1 text-lg font-extrabold text-slate-900 tracking-tight">{currentEvent.name}</h2>
-              <p className="text-xs text-slate-500">
-                {currentEvent.status === 'completed' ? 'Event completed' : currentEvent.status === 'live' || currentEvent.status === 'ongoing' ? 'Live on Main Ground' : 'Scheduled Soon'}
-              </p>
+              <span className="text-sm font-semibold text-slate-500">
+                {currentEvent.status === 'completed' ? 'Completed' : currentEvent.status === 'live' || currentEvent.status === 'ongoing' ? 'Live on Main Ground' : 'Scheduled Soon'}
+              </span>
             </div>
-            <Link
-              to="/events"
-              className="flex items-center gap-1 shrink-0 rounded-xl bg-slate-900 px-3.5 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition-colors"
-            >
-              <span>Details</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                {currentEvent.name}
+              </h1>
+
+              <Link
+                to="/events"
+                className="inline-flex items-center gap-2 self-start sm:self-auto rounded-xl bg-slate-900 px-5 py-3 text-sm font-extrabold text-white hover:bg-slate-800 transition-colors shadow-xs"
+              >
+                <span>View Event Details</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="mt-3 text-sm text-slate-500">No active events right now.</div>
+          <p className="text-base text-slate-500 py-4">No active events currently scheduled.</p>
         )}
       </section>
 
-      {/* 2. STANDINGS PREVIEW */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-        <div className="flex items-center justify-between mb-4">
+      {/* 2. LIVE STANDINGS SCOREBOARD (THE VISUAL CENTERPIECE) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div>
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Trophy className="h-4 w-4 text-amber-500" />
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2 tracking-tight">
+              <Trophy className="h-6 w-6 text-amber-500 shrink-0" />
               <span>Team Standings</span>
             </h2>
-            <p className="text-xs text-slate-500">Live points leaderboard</p>
+            <p className="text-sm font-semibold text-slate-500">Live official points leaderboard</p>
           </div>
           <Link
             to="/standings"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
           >
-            <span>Full Standings</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <span>Full Scoreboard</span>
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         {isLoading && standings.length === 0 ? (
-          <div className="space-y-2">
+          <div className="space-y-3 py-4">
             {[1, 2, 3, 4].map(n => (
-              <div key={n} className="h-12 w-full animate-pulse rounded-xl bg-slate-100" />
+              <div key={n} className="h-16 w-full animate-pulse rounded-xl bg-slate-200/60" />
             ))}
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="divide-y divide-slate-200">
             {standings.slice(0, 4).map((item) => {
               const rank = item.position;
               const isFirst = rank === 1;
-              const isSecond = rank === 2;
-              const isThird = rank === 3;
 
               return (
                 <div
                   key={item.team.id}
-                  className={`flex items-center justify-between rounded-xl p-3 border transition-colors ${
-                    isFirst ? 'bg-amber-50/50 border-amber-200' :
-                    isSecond ? 'bg-slate-50/80 border-slate-200' :
-                    isThird ? 'bg-orange-50/40 border-orange-200' :
-                    'bg-white border-slate-100 hover:border-slate-200'
-                  }`}
+                  className="flex items-center justify-between py-4 sm:py-5 transition-colors hover:bg-slate-100/40 px-2 rounded-xl"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-extrabold ${
-                      isFirst ? 'bg-amber-400 text-amber-950' :
-                      isSecond ? 'bg-slate-300 text-slate-800' :
-                      isThird ? 'bg-orange-300 text-orange-950' :
-                      'bg-slate-100 text-slate-600'
+                  {/* Left: Position & Team Name */}
+                  <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+                    <span className={`flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-mono text-lg sm:text-xl font-black tabular-nums ${
+                      isFirst ? 'bg-amber-400 text-amber-950' : 'bg-slate-200 text-slate-800'
                     }`}>
-                      {rank}
+                      0{rank}
                     </span>
-                    <div>
-                      <h3 className="text-sm font-extrabold text-slate-900 leading-tight">{item.team.name}</h3>
-                      <p className="text-[11px] text-slate-500">{item.resultsCount} results completed</p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg sm:text-xl font-black text-slate-900 leading-tight truncate">
+                          {item.team.name}
+                        </h3>
+                        {isFirst && (
+                          <span className="hidden sm:inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-extrabold text-amber-900 border border-amber-300">
+                            Leader
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm font-medium text-slate-500 mt-0.5">
+                        {item.resultsCount} event{item.resultsCount === 1 ? '' : 's'} recorded
+                      </p>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <span className="text-lg font-black text-slate-900 font-mono tabular-nums">{item.totalPoints}</span>
-                    <span className="text-[11px] font-semibold text-slate-500 ml-1">PTS</span>
+                  {/* Right: Points */}
+                  <div className="text-right shrink-0">
+                    <span className="text-3xl sm:text-4xl font-black text-slate-900 font-mono tabular-nums">
+                      {item.totalPoints}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500 block uppercase tracking-wider">
+                      PTS
+                    </span>
                   </div>
                 </div>
               );
@@ -151,29 +166,29 @@ export const HomePage: React.FC = () => {
         )}
       </section>
 
-      {/* 3. RECENT RESULTS PREVIEW */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-        <div className="flex items-center justify-between mb-4">
+      {/* 3. RECENT RESULTS SHEET */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div>
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Award className="h-4 w-4 text-blue-600" />
-              <span>Recent Results</span>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2 tracking-tight">
+              <Award className="h-6 w-6 text-blue-600 shrink-0" />
+              <span>Latest Results</span>
             </h2>
-            <p className="text-xs text-slate-500">Latest completed events</p>
+            <p className="text-sm font-semibold text-slate-500">Recently published placements</p>
           </div>
           <Link
             to="/results"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
           >
             <span>All Results</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         {recentResults.length === 0 ? (
-          <div className="py-6 text-center text-xs text-slate-500">No results published yet.</div>
+          <p className="py-6 text-base text-slate-500">No results published yet.</p>
         ) : (
-          <div className="space-y-2.5">
+          <div className="divide-y divide-slate-200">
             {recentResults.map((resItem) => {
               const eventObj = events.find((e) => e.id === resItem.eventId);
               const teamObj = standings.find((s) => s.team.id === resItem.teamId)?.team;
@@ -181,31 +196,31 @@ export const HomePage: React.FC = () => {
               return (
                 <div
                   key={resItem.id}
-                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 p-3 hover:bg-slate-100/60 transition-colors"
+                  className="flex items-center justify-between py-4 transition-colors hover:bg-slate-100/40 px-2 rounded-xl"
                 >
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200/60">
+                  <div className="space-y-1 min-w-0 pr-4">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-blue-800 bg-blue-100 px-2 py-0.5 rounded">
                       {eventObj?.name || 'Event'}
                     </span>
-                    <div className="text-sm font-bold text-slate-900">
+                    <div className="text-base sm:text-lg font-extrabold text-slate-900 truncate">
                       {resItem.participantName ? resItem.participantName : (teamObj?.name || 'Team Event')}
                     </div>
                     {teamObj && (
-                      <div className="text-xs font-medium text-slate-500">
+                      <div className="text-sm font-semibold text-slate-500">
                         {teamObj.name}
                       </div>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-bold ${
-                      resItem.position === 1 ? 'bg-amber-100 text-amber-900 border border-amber-300' :
-                      resItem.position === 2 ? 'bg-slate-200 text-slate-800 border border-slate-300' :
-                      'bg-orange-100 text-orange-900 border border-orange-300'
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className={`inline-flex items-center rounded-xl px-3 py-1 text-sm font-black ${
+                      resItem.position === 1 ? 'bg-amber-400 text-amber-950' :
+                      resItem.position === 2 ? 'bg-slate-200 text-slate-800' :
+                      'bg-amber-100 text-amber-900'
                     }`}>
                       {resItem.position === 1 ? '🥇 1st' : resItem.position === 2 ? '🥈 2nd' : '🥉 3rd'}
                     </span>
-                    <span className="text-xs font-black text-slate-700 font-mono tabular-nums">
+                    <span className="text-base font-black text-slate-900 font-mono tabular-nums">
                       +{resItem.points} pts
                     </span>
                   </div>
@@ -215,17 +230,6 @@ export const HomePage: React.FC = () => {
           </div>
         )}
       </section>
-
-      {/* Quick Navigation Footer Link */}
-      <div className="text-center pt-2">
-        <Link
-          to="/events"
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-50 px-4 py-2.5 text-xs font-bold text-blue-700 hover:bg-blue-100 transition-colors border border-blue-200"
-        >
-          <Zap className="h-4 w-4" />
-          <span>Explore All Events & Schedule</span>
-        </Link>
-      </div>
 
     </div>
   );

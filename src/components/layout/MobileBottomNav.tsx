@@ -21,7 +21,7 @@ export const MobileBottomNav: React.FC = () => {
   };
 
   return (
-    <nav aria-label="Mobile Navigation" className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur-md sm:hidden shadow-lg">
+    <nav aria-label="Mobile Navigation" className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white sm:hidden shadow-md">
       <div className="grid grid-cols-5 h-16 max-w-md mx-auto">
         {navItems.map((item) => {
           const active = isActive(item);
@@ -30,14 +30,12 @@ export const MobileBottomNav: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center justify-center py-1 transition-colors ${
-                active ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-slate-900'
+              className={`flex flex-col items-center justify-center transition-colors ${
+                active ? 'text-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <div className={`flex items-center justify-center h-7 w-7 rounded-full ${active ? 'bg-blue-50 text-blue-600' : ''}`}>
-                <Icon className="h-5 w-5" />
-              </div>
-              <span className="text-[11px] leading-tight mt-0.5">{item.label}</span>
+              <Icon className="h-5 w-5 mb-0.5" />
+              <span className="text-xs font-medium">{item.label}</span>
             </Link>
           );
         })}

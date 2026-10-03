@@ -1,68 +1,57 @@
-# SPORTS MEET LIVE 2026 — DESIGN SYSTEM
+# SPORTS MEET LIVE 2026 — EDITORIAL SPORTS SCOREBOARD DESIGN SYSTEM (PHASE 7.5)
 
-A minimal, light-first, highly readable modern sports scoreboard design system inspired by Apple Sports and Linear.
-
----
-
-## 1. Design Principles
-
-- **Fast to Understand, Fast to Use, Excellent on Phone**.
-- **Light-First Aesthetics**: Clean, bright neutrals (`#f8fafc`, `#ffffff`), crisp borders (`#e2e8f0`), deep slate typography (`#0f172a`).
-- **No Unnecessary Visual Noise**: No complex gradients, no glassmorphism, no heavy shadows, no dark/rainbow dashboard chaos.
-- **Mobile First**: Optimized for 360px–430px wide viewports with responsive expansion up to 1440px+ desktop monitors.
-- **Scannable Hierarchy**: Visually prominent tabular numbers for team scores and position ranks.
+A bold, clean, typography-first sports scoreboard presentation layer designed for effortless mobile scanning and confident desktop presentation.
 
 ---
 
-## 2. Color System
+## 1. Core Principles
 
-### Base & Neutrals
-- **App Background**: `bg-slate-50` (`#f8fafc`)
-- **Card Background**: `bg-white` (`#ffffff`)
-- **Card Border**: `border-slate-200` (`#e2e8f0`) / hover `border-slate-300`
-- **Text Primary**: `text-slate-900` (`#0f172a`)
-- **Text Secondary**: `text-slate-500` (`#64748b`)
-- **Text Muted**: `text-slate-400` (`#94a3b8`)
-
-### Brand & Sports Accent
-- **Primary Accent**: Athletic Blue `bg-blue-600` (`#2563eb`), hover `bg-blue-700` (`#1d4ed8`)
-- **Live Indicator**: Emerald `bg-emerald-500` / `text-emerald-700` / `bg-emerald-50`
-
-### Position Badges (Podium Ranks)
-- **1st Gold**: `bg-amber-100 text-amber-900 border border-amber-300 font-bold`
-- **2nd Silver**: `bg-slate-100 text-slate-800 border border-slate-300 font-bold`
-- **3rd Bronze**: `bg-orange-100 text-orange-900 border border-orange-300 font-bold`
-- **4th+ Position**: `bg-slate-50 text-slate-600 border border-slate-200 font-medium`
+- **Editorial Sports Scoreboard**: Calm, spacious, high-contrast, confident. Looks like a real live college sports meet app, not a SaaS dashboard or analytics tool.
+- **Typography-First Hierarchy**: Large readable typography. No tiny 10px–12px text anywhere in normal content.
+- **Single Page Scroll**: The page scrolls naturally as one unified view. NO nested scrolling containers, NO fixed-height scrolling panels, NO split-viewport scrolling.
+- **De-Cardified Presentation**: Avoid card-ifying every row or wrapping lists inside nested rounded borders. Prefer clean editorial rows with subtle horizontal dividers (`divide-y divide-slate-200`), generous vertical padding, and whitespace.
+- **Mobile-First Composition**: Designed specifically for 360px–430px wide phone viewports with room to breathe, scaling up to centered 1024px–1440px desktop layouts.
 
 ---
 
-## 3. Typography
+## 2. Typography Scale
 
-- **Font Family**: System Sans-Serif (`Inter`, `system-ui`, `-apple-system`, `BlinkMacSystemFont`)
-- **App Title**: 20px–24px, Bold tracking-tight (`text-xl sm:text-2xl font-bold`)
-- **Page Title**: 24px–30px, Bold tracking-tight (`text-2xl sm:text-3xl font-extrabold`)
-- **Section Title**: 16px–20px, Semi-bold (`text-base sm:text-lg font-semibold`)
-- **Body Text**: 14px–16px, Regular (`text-sm sm:text-base`)
-- **Secondary Text**: 12px–13px, Medium (`text-xs sm:text-sm text-slate-500`)
-- **Tabular Numbers**: `font-mono tabular-nums` for points and ranks
+- **Page Titles**: `32px – 40px` (`text-3xl sm:text-4xl font-black tracking-tight text-slate-900`)
+- **Section Headers**: `22px – 28px` (`text-xl sm:text-2xl font-bold tracking-tight text-slate-900`)
+- **Standings & Major Numbers**: `32px – 44px` (`text-3xl sm:text-4xl font-black font-mono tabular-nums text-slate-900`)
+- **Event & Team Titles**: `18px – 22px` (`text-lg sm:text-xl font-extrabold text-slate-900`)
+- **Participant / Body Text**: `16px – 18px` (`text-base sm:text-lg font-medium text-slate-900`)
+- **Labels & Secondary Metadata**: `14px – 15px` (`text-sm font-semibold text-slate-500`)
+- **Minimum Font Size**: `14px` (`text-sm`). `text-xs` (12px) and `text-[10px]` are strictly forbidden for user content.
+
+---
+
+## 3. Color & Visual Palette
+
+- **App Background**: Soft warm off-white / light slate (`bg-slate-50`, `#f8fafc`).
+- **Surface**: Pure White (`#ffffff`) for elevated header/navigation and structured scoreboard blocks.
+- **Primary Text**: Near Black / Deep Slate (`text-slate-900`, `#0f172a`).
+- **Secondary Text**: Neutral Slate (`text-slate-500`, `#64748b`).
+- **Dividers & Borders**: Crisp light slate (`border-slate-200`, `#e2e8f0`).
+- **Brand Accent**: Athletic Blue (`bg-blue-600` / `text-blue-600`), used strictly for primary CTAs and active states.
+- **Podium Ranks**:
+  - 1st Place (Gold): Subtle warm gold rank indicator (`bg-amber-400 text-amber-950 font-black`)
+  - 2nd Place (Silver): Cool silver rank indicator (`bg-slate-200 text-slate-800 font-bold`)
+  - 3rd Place (Bronze): Bronze rank indicator (`bg-amber-100 text-amber-900 font-bold`)
 
 ---
 
 ## 4. Spacing & Touch Boundaries
 
-- **Touch Targets**: Minimum 44px height for interactive elements on mobile (`h-11 px-4`).
-- **Container Margins**: `max-w-4xl mx-auto px-4 sm:px-6 py-6`.
-- **Bottom Navigation Clearance**: `pb-24` padding on main content on mobile screens (`sm:pb-8`).
-- **Card Spacing**: `space-y-3` for vertical lists, `gap-3` or `gap-4` for grids.
+- **Page Padding**: Mobile: `px-4 py-6`, Desktop: `px-8 py-10 max-w-4xl mx-auto`.
+- **Bottom Nav Clearance**: `pb-28 sm:pb-12` on the main page content wrapper.
+- **Row Spacing**: `py-4 sm:py-5` for event & result rows.
+- **Touch Targets**: Minimum 48px height for all interactive buttons and form inputs (`h-12 px-5 text-base`).
 
 ---
 
-## 5. Components Overview
+## 5. Navigation & Shell
 
-- `AppShell`: Top header bar + main view container + sticky mobile bottom navigation.
-- `MobileBottomNav`: Sticky bottom bar with 5 primary touch destinations (`Home`, `Standings`, `Events`, `Results`, `Admin`).
-- `StandingsCard`: Mobile stacked team rank card featuring prominent score badge.
-- `EventCard`: Compact card with category badge, status indicator, and podium summary.
-- `ResultCard`: Clean scannable result card displaying event, rank badge, winner name, class, and team.
-- `FilterChips`: Horizontal filter chip bar for events & results filtering.
-- `FormInputs`: 1-field-per-row inputs with large 44px+ touch targets and clear validation errors.
+- **Mobile Navigation**: Simple fixed bottom navigation bar with 5 primary destinations (`Home`, `Standings`, `Events`, `Results`, `Admin`). Large icons and 14px labels.
+- **Desktop Header**: Clean top bar with app title, live status pill, and navigation links.
+- **Unified Vertical Page Scroll**: The browser page window handles all vertical scrolling natively.

@@ -21,7 +21,6 @@ import {
   Sparkles,
   SlidersHorizontal,
   UserCheck,
-  User,
   Clock
 } from 'lucide-react';
 import { isAppwriteConfigured } from '../lib/appwrite';
@@ -79,12 +78,11 @@ export const AdminDashboardPage: React.FC = () => {
   if (isAuthLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
       </div>
     );
   }
 
-  // Security Guard: Redirect unauthorized users to /admin/login
   if (!user || !isAuthorizedAdmin) {
     return <Navigate to="/admin/login" replace />;
   }
@@ -136,297 +134,229 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       
-      {/* Admin Top Banner */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+      {/* Admin Header Banner */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-slate-200">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Admin Portal</h1>
-            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200 flex items-center gap-1">
-              <ShieldCheck className="h-3.5 w-3.5" /> Authorized
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">ADMIN PORTAL</h1>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-900 border border-emerald-300 flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-emerald-700" /> Authorized
             </span>
           </div>
-          <p className="text-xs text-slate-500">
-            Logged in as: <strong className="text-slate-800">{user.email}</strong>
-            {!isAppwriteConfigured && <span className="ml-2 text-amber-600 font-mono text-[10px]">(Mock Mode)</span>}
+          <p className="text-sm font-semibold text-slate-500">
+            Official admin control panel · Signed in as: <strong className="text-slate-900">{user.email}</strong>
+            {!isAppwriteConfigured && <span className="ml-2 text-amber-700 font-mono text-xs">(Mock Mode)</span>}
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/admin/admins"
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
           >
-            <UserCheck className="h-3.5 w-3.5 text-blue-600" />
+            <UserCheck className="h-4 w-4 text-blue-600" />
             <span>Admins</span>
           </Link>
 
           <button
             onClick={() => loadDashboardData()}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
-            title="Refresh dashboard data"
+            className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoadingData ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${isLoadingData ? 'animate-spin' : ''}`} />
             <span>Sync</span>
           </button>
 
           <button
             onClick={() => logout()}
-            className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-100 transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-800 hover:bg-red-100 transition-colors"
           >
-            <LogOut className="h-3.5 w-3.5" />
+            <LogOut className="h-4 w-4 text-red-600" />
             <span>Sign Out</span>
           </button>
         </div>
       </div>
 
-      {/* Quick Action Buttons Bar */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Quick Actions</h2>
+      {/* Large Obvious Quick Actions */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-black uppercase tracking-wider text-slate-500">Quick Actions</h2>
         
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <button
             onClick={() => setIsAddResultOpen(true)}
-            className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-xs font-extrabold text-white hover:bg-blue-700 shadow-xs active:scale-98 transition-all"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-base font-extrabold text-white hover:bg-blue-700 transition-all shadow-xs"
           >
-            <Plus className="h-4 w-4 stroke-[3]" />
-            <span>+ Add Result</span>
+            <Plus className="h-5 w-5 stroke-[3]" />
+            <span>+ ADD RESULT</span>
           </button>
 
           <button
             onClick={() => setIsCreateEventOpen(true)}
-            className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs"
           >
-            <Calendar className="h-4 w-4 text-blue-600" />
-            <span>+ Create Event</span>
+            <Calendar className="h-5 w-5 text-blue-600" />
+            <span>+ CREATE EVENT</span>
           </button>
 
           <button
             onClick={() => setIsAdjustmentModalOpen(true)}
-            className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors shadow-xs"
           >
-            <SlidersHorizontal className="h-4 w-4 text-slate-600" />
-            <span>Starting Points</span>
+            <SlidersHorizontal className="h-5 w-5 text-slate-700" />
+            <span>STARTING POINTS</span>
           </button>
 
           <Link
             to="/admin/posters"
-            className="flex items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-xs font-bold text-amber-900 hover:bg-amber-100 transition-colors"
+            className="flex h-14 items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100/80 px-5 text-base font-extrabold text-amber-950 hover:bg-amber-200 transition-colors shadow-xs"
           >
-            <Sparkles className="h-4 w-4 text-amber-600" />
-            <span>Posters</span>
+            <Sparkles className="h-5 w-5 text-amber-700" />
+            <span>POSTERS</span>
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Main Grid: Standings & Results Operations */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Standings Column */}
-        <div className="lg:col-span-1 space-y-5">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900">Current Leaderboard</h3>
-              <span className="text-[11px] font-semibold text-slate-500 font-mono">{standings.length} Teams</span>
-            </div>
-
-            <div className="space-y-2">
-              {standings.map((item) => (
-                <div
-                  key={item.team.id}
-                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className={`flex h-6 w-6 items-center justify-center rounded-lg text-xs font-bold ${
-                      item.position === 1 ? 'bg-amber-400 text-amber-950' :
-                      item.position === 2 ? 'bg-slate-300 text-slate-800' :
-                      item.position === 3 ? 'bg-orange-300 text-orange-950' :
-                      'bg-slate-100 text-slate-600'
-                    }`}>
-                      #{item.position}
-                    </span>
-                    <span className="text-xs font-extrabold text-slate-900">{item.team.name}</span>
-                  </div>
-                  <span className="font-mono text-sm font-black text-slate-900 tabular-nums">
-                    {item.totalPoints} <span className="text-[10px] text-slate-500 font-bold">PTS</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Managed Events Section */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900">Managed Events</h3>
-              <span className="text-[11px] font-semibold text-slate-500 font-mono">{events.length} Events</span>
-            </div>
-
-            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
-              {events.map((ev) => (
-                <div key={ev.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5 text-xs">
-                  <div>
-                    <span className="font-bold text-slate-900 block">{ev.name}</span>
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold">{ev.status || 'upcoming'}</span>
-                  </div>
-                  <button
-                    onClick={() => setEditingEvent(ev)}
-                    className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-200 hover:text-blue-600 transition-colors"
-                    title="Edit Event"
-                  >
-                    <Edit2 className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Today's Events Schedule */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">TODAY'S EVENTS</h2>
+          <span className="text-sm font-bold text-slate-500">{events.length} Events Total</span>
         </div>
 
-        {/* Results Audit Column */}
-        <div className="lg:col-span-2 space-y-5">
-          
-          {/* Recent Results History */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900">Recent Results History</h3>
-              <span className="text-[11px] font-semibold text-slate-500 font-mono">{recentResults.length} Entries</span>
-            </div>
-
-            {recentResults.length === 0 ? (
-              <div className="p-6 text-center text-xs text-slate-500">
-                No results recorded yet. Click "+ Add Result" above to add placement scores.
-              </div>
-            ) : (
-              <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-100 text-xs">
-                {recentResults.map((res) => (
-                  <div key={res.id} className="p-3 hover:bg-slate-50/60 transition-colors space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-slate-900 text-sm">{getEventName(res.eventId)}</span>
-                        <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
-                          res.position === 1 ? 'bg-amber-100 text-amber-900 border border-amber-300' :
-                          res.position === 2 ? 'bg-slate-200 text-slate-800' :
-                          res.position === 3 ? 'bg-orange-100 text-orange-900' : 'bg-slate-100 text-slate-600'
-                        }`}>
-                          #{res.position} Place
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-sm font-black text-slate-900 tabular-nums">
-                          +{res.points} PTS
-                        </span>
-
-                        <Link
-                          to={
-                            res.participantName
-                              ? `/admin/posters?name=${encodeURIComponent(res.participantName)}&team=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=individual`
-                              : `/admin/posters?name=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=team`
-                          }
-                          className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-900 hover:bg-amber-100 transition-colors flex items-center gap-1"
-                          title="Generate poster"
-                        >
-                          <Sparkles className="h-3 w-3" />
-                          <span>Poster</span>
-                        </Link>
-
-                        <button
-                          onClick={() => setEditingResult(res)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600 transition-colors"
-                          title="Edit Result"
-                        >
-                          <Edit2 className="h-3.5 w-3.5" />
-                        </button>
-
-                        <button
-                          onClick={() => setDeletingResult(res)}
-                          className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
-                          title="Delete Result"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Audit Info Row */}
-                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-medium">
-                      {res.participantName && (
-                        <span>Participant: <strong className="text-slate-900">{res.participantName}</strong></span>
-                      )}
-                      <span>Team: <strong className="text-slate-900">{getTeamName(res.teamId)}</strong></span>
-                      {res.createdBy && (
-                        <span className="flex items-center gap-1 text-slate-400">
-                          <User className="h-3 w-3" /> by {res.createdBy}
-                        </span>
-                      )}
-                      {res.createdAt && (
-                        <span className="flex items-center gap-1 text-slate-400">
-                          <Clock className="h-3 w-3" /> {new Date(res.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Starting Points Section */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+          {events.map((ev) => (
+            <div key={ev.id} className="flex items-center justify-between py-4 px-2 hover:bg-slate-100/40 transition-colors">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                  <SlidersHorizontal className="h-4 w-4 text-blue-600" />
-                  <span>Starting Points Adjustments</span>
-                </h3>
-                <p className="text-[11px] text-slate-500">
-                  Pre-system points adjustments separated from official event results.
-                </p>
+                <h3 className="text-lg font-extrabold text-slate-900">{ev.name}</h3>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  {ev.category || 'Track'} · Status: {ev.status || 'upcoming'}
+                </span>
               </div>
-
               <button
-                onClick={() => setIsAdjustmentModalOpen(true)}
-                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
+                onClick={() => setEditingEvent(ev)}
+                className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
               >
-                + Adjust
+                <Edit2 className="h-4 w-4 text-blue-600" />
+                <span>Edit</span>
               </button>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {adjustments.length === 0 ? (
-              <div className="p-4 text-center text-xs text-slate-500">
-                No standings adjustments currently recorded.
-              </div>
-            ) : (
-              <div className="divide-y divide-slate-100 rounded-xl border border-slate-100 bg-white text-xs">
-                {adjustments.map((adj) => (
-                  <div key={adj.id} className="p-3 flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900">{getTeamName(adj.teamId)}</span>
-                        <span className={`font-mono text-xs font-extrabold ${adj.points >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
-                          {adj.points >= 0 ? `+${adj.points}` : adj.points} PTS
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5">{adj.reason || 'Starting Points Adjustment'}</p>
-                    </div>
-
-                    <button
-                      onClick={() => setDeletingAdjustment(adj)}
-                      className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
-                      title="Delete adjustment"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
+      {/* Recent Results History */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">RECENT RESULTS HISTORY</h2>
+          <span className="text-sm font-bold text-slate-500">{recentResults.length} Entries Recorded</span>
         </div>
 
-      </div>
+        {recentResults.length === 0 ? (
+          <p className="py-6 text-base text-slate-500">No results recorded yet.</p>
+        ) : (
+          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            {recentResults.map((res) => (
+              <div key={res.id} className="py-4 px-2 space-y-2 hover:bg-slate-100/40 transition-colors">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-base sm:text-lg font-black text-slate-900">{getEventName(res.eventId)}</span>
+                    <span className="rounded-md bg-amber-100 px-2.5 py-0.5 text-xs font-black text-amber-900">
+                      #{res.position} Place
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-lg font-black text-slate-900 pr-2">
+                      +{res.points} PTS
+                    </span>
+
+                    <Link
+                      to={
+                        res.participantName
+                          ? `/admin/posters?name=${encodeURIComponent(res.participantName)}&team=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=individual`
+                          : `/admin/posters?name=${encodeURIComponent(getTeamName(res.teamId))}&eventName=${encodeURIComponent(getEventName(res.eventId))}&position=${res.position}&type=team`
+                      }
+                      className="rounded-xl border border-amber-300 bg-amber-100 px-3 py-1.5 text-xs font-black text-amber-950 hover:bg-amber-200 transition-colors flex items-center gap-1"
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Poster</span>
+                    </Link>
+
+                    <button
+                      onClick={() => setEditingResult(res)}
+                      className="rounded-xl border border-slate-300 bg-white p-2 text-slate-700 hover:bg-slate-100 transition-colors"
+                      title="Edit Result"
+                    >
+                      <Edit2 className="h-4 w-4 text-blue-600" />
+                    </button>
+
+                    <button
+                      onClick={() => setDeletingResult(res)}
+                      className="rounded-xl border border-red-200 bg-red-50 p-2 text-red-700 hover:bg-red-100 transition-colors"
+                      title="Delete Result"
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-600">
+                  {res.participantName && (
+                    <span>Participant: <strong className="text-slate-900">{res.participantName}</strong></span>
+                  )}
+                  <span>Team: <strong className="text-slate-900">{getTeamName(res.teamId)}</strong></span>
+                  {res.createdAt && (
+                    <span className="flex items-center gap-1 text-slate-500">
+                      <Clock className="h-3.5 w-3.5" /> {new Date(res.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Starting Points Section */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">STARTING POINTS ADJUSTMENTS</h2>
+          <button
+            onClick={() => setIsAdjustmentModalOpen(true)}
+            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+          >
+            + Add Adjustment
+          </button>
+        </div>
+
+        {adjustments.length === 0 ? (
+          <p className="py-4 text-base text-slate-500">No starting adjustments recorded.</p>
+        ) : (
+          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            {adjustments.map((adj) => (
+              <div key={adj.id} className="py-4 px-2 flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg font-extrabold text-slate-900">{getTeamName(adj.teamId)}</span>
+                    <span className={`font-mono text-base font-black ${adj.points >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
+                      {adj.points >= 0 ? `+${adj.points}` : adj.points} PTS
+                    </span>
+                  </div>
+                  <p className="text-sm font-medium text-slate-500 mt-0.5">{adj.reason || 'Initial standings — pre-system results'}</p>
+                </div>
+
+                <button
+                  onClick={() => setDeletingAdjustment(adj)}
+                  className="rounded-xl border border-red-200 bg-red-50 p-2 text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  <Trash2 className="h-4 w-4 text-red-600" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Scoring Rules Manager */}
       <ScoringRulesEditor onRulesUpdated={loadDashboardData} />

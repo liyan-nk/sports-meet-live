@@ -97,50 +97,50 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl space-y-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-300 bg-white p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
           <div className="flex items-center gap-2">
-            <PlusCircle className="h-5 w-5 text-blue-600" />
-            <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">Record Event Result</h3>
+            <PlusCircle className="h-6 w-6 text-blue-600" />
+            <h3 className="text-xl font-black text-slate-900 tracking-tight">Record Event Result</h3>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+            className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="h-6 w-6" />
           </button>
         </div>
 
         {errorMsg && (
-          <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
+          <div className="flex items-start gap-2 rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-900 font-bold">
+            <AlertCircle className="h-5 w-5 shrink-0 text-red-600 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
-            <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+          <div className="flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-950 font-bold">
+            <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           
           {/* Select Event */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Event
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-bold text-slate-800">
+                Select Event
               </label>
               <button
                 type="button"
                 onClick={onOpenCreateEvent}
-                className="text-xs text-blue-600 hover:underline font-bold"
+                className="text-xs text-blue-600 hover:underline font-extrabold"
               >
                 + Create New Event
               </button>
@@ -148,7 +148,7 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
             <select
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
-              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
+              className="w-full h-12 rounded-xl border border-slate-300 bg-slate-50 px-4 text-base font-semibold text-slate-900 focus:border-blue-600 focus:outline-none"
               required
             >
               {events.map((ev) => (
@@ -160,14 +160,14 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
           </div>
 
           {/* Select Team */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Team
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-800">
+              Select Team
             </label>
             <select
               value={selectedTeamId}
               onChange={(e) => setSelectedTeamId(e.target.value)}
-              className="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
+              className="w-full h-12 rounded-xl border border-slate-300 bg-slate-50 px-4 text-base font-semibold text-slate-900 focus:border-blue-600 focus:outline-none"
               required
             >
               {teams.map((tm) => (
@@ -179,23 +179,23 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
           </div>
 
           {/* Participant Name */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Participant Name <span className="text-slate-400 font-normal lowercase">(optional for team events)</span>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-800">
+              Participant Name <span className="text-slate-500 font-normal">(optional for team events)</span>
             </label>
             <input
               type="text"
               placeholder="e.g. Liyan (S3 CSE) — Leave blank for team events"
               value={participantName}
               onChange={(e) => setParticipantName(e.target.value)}
-              className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none shadow-xs"
+              className="w-full h-12 rounded-xl border border-slate-300 bg-white px-4 text-base font-medium text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none"
             />
           </div>
 
           {/* Position Selection */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Position
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-slate-800">
+              Placement Position
             </label>
             <div className="grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map((pos) => (
@@ -203,10 +203,10 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
                   key={pos}
                   type="button"
                   onClick={() => setSelectedPosition(pos)}
-                  className={`h-11 rounded-xl border text-xs font-bold transition-all ${
+                  className={`h-12 rounded-xl border text-sm font-extrabold transition-all ${
                     selectedPosition === pos
-                      ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-xs'
-                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                      ? 'border-blue-600 bg-blue-600 text-white shadow-xs'
+                      : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
                   }`}
                 >
                   {pos === 1 ? '🥇 1st' : pos === 2 ? '🥈 2nd' : pos === 3 ? '🥉 3rd' : '4th'}
@@ -216,32 +216,32 @@ export const AddResultModal: React.FC<AddResultModalProps> = ({
           </div>
 
           {/* Points Preview */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center justify-between">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold text-slate-900 block">Awarded Points</span>
-              <span className="text-[11px] text-slate-500">Auto-calculated from position #{selectedPosition} rule</span>
+              <span className="text-sm font-bold text-slate-900 block">Awarded Points</span>
+              <span className="text-xs font-semibold text-slate-500">Auto-calculated from scoring engine</span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black text-blue-600 font-mono tabular-nums">
+              <span className="text-3xl font-black text-blue-600 font-mono tabular-nums">
                 +{calculatedPoints}
               </span>
-              <span className="text-xs font-bold text-slate-500">PTS</span>
+              <span className="text-xs font-extrabold text-slate-500">PTS</span>
             </div>
           </div>
 
-          {/* Submit Action */}
-          <div className="flex justify-end gap-2 pt-2">
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
+              className="h-12 rounded-xl border border-slate-300 bg-white px-6 text-sm font-bold text-slate-800 hover:bg-slate-100"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-11 rounded-xl bg-blue-600 px-5 text-xs font-extrabold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
+              className="h-12 rounded-xl bg-blue-600 px-6 text-sm font-extrabold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
             >
               {isSubmitting ? 'Saving...' : 'Save Result'}
             </button>

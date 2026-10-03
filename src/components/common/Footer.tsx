@@ -7,31 +7,31 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenRules }) => {
   return (
-    <footer className="mt-12 border-t border-slate-200 bg-white py-8 text-slate-600 mb-16 sm:mb-0">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+    <footer className="mt-16 border-t border-slate-200 bg-white py-10 text-slate-700 mb-16 sm:mb-0">
+      <div className="mx-auto max-w-4xl px-4 sm:px-8">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           
-          <div className="text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-bold tracking-wider text-slate-900">
-              <span>SPORTS MEET LIVE 2026</span>
+          <div className="text-center sm:text-left space-y-1">
+            <div className="text-base font-black tracking-tight text-slate-900">
+              SPORTS MEET LIVE 2026
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm font-medium text-slate-500">
               Official College Championship Points Tracking System
             </p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-4 text-sm">
             {onOpenRules && (
               <button
                 onClick={onOpenRules}
-                className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-100"
+                className="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 font-bold text-slate-800 transition-colors hover:bg-slate-100"
               >
-                <Info className="h-3.5 w-3.5 text-blue-600" />
+                <Info className="h-4 w-4 text-blue-600" />
                 <span>Scoring Rules</span>
               </button>
             )}
 
-            <div className="flex items-center gap-1.5 text-slate-500">
+            <div className="flex items-center gap-2 font-semibold text-slate-600">
               <ShieldCheck className="h-4 w-4 text-emerald-600" />
               <span>Realtime Verified</span>
             </div>
